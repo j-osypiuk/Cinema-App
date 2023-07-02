@@ -69,6 +69,12 @@ namespace CinemaApp.Web.Controllers
 			return View(movieVM);
 		}
 
+		public IActionResult Details(int? id)
+		{
+			var movie = _db.Movies.Where(x => x.Id == id).Include(x => x.MovieGenres).ThenInclude(x => x.Genre).First();
+			return View(movie);
+		}
+
 		public IActionResult Edit(int? id)
 		{
 			if (id == null || id == 0)
