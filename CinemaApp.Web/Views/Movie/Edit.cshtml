@@ -1,0 +1,91 @@
+﻿@model MovieVM
+
+<div class="d-flex justify-content-center">
+	<div class="card w-50 shadow bg-dark mt-4">
+		<div class="card-header bg-black bg-gradient mt-0 py-1">
+			<div class="row">
+				<div class="col-12 text-center">
+					<h2 class="text-white py-2">Edit Movie</h2>
+				</div>
+			</div>
+		</div>
+		<div class="card-body p-4">
+			<form method="post" class="row" enctype="multipart/form-data">
+				<input asp-for="Movie.Id" hidden/>
+				<input asp-for="Movie.ImageUrl" hidden />
+				<div class="mb-3">
+					<label asp-for="Movie.Title" class="text-white-50 form-label"></label>
+					<input asp-for="Movie.Title" class="form-control" placeholder="Movie Title">
+					<span asp-validation-for="Movie.Title" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Movie.Description" class="text-white-50 form-label"></label>
+					<textarea asp-for="Movie.Description" class="form-control" style="height:200px;" placeholder="Movie Description"></textarea>
+					<span asp-validation-for="Movie.Description" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Movie.Director" class="text-white-50 form-label"></label>
+					<input asp-for="Movie.Director" class="form-control" placeholder="Directors (separated by coma if more than one)">
+					<span asp-validation-for="Movie.Director" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label class="text-white-50 form-label">Genres</label>
+					<div class="row">
+						@foreach (var genre in Model.Genres)
+						{	
+							<div class="col-4 d-flex align-items-center">
+								@if (Model.SelectedGenreIds.Contains(genre.Id))
+								{
+									<input type="checkbox" name="SelectedGenreIds" value="@genre.Id" checked /><span class="text-white-50 ms-1">@genre.Name</span>
+
+								} else
+								{
+									<input type="checkbox" name="SelectedGenreIds" value="@genre.Id"/><span class="text-white-50 ms-1">@genre.Name</span>
+								}
+							</div>
+						}
+					</div>
+					<span asp-validation-for="Movie.MovieGenres" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Movie.MainActor" class="text-white-50 form-label"></label>
+					<input asp-for="Movie.MainActor" class="form-control" placeholder="Main Actors (separated by coma if more than one)">
+					<span asp-validation-for="Movie.MainActor" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Movie.Duration" class="text-white-50 form-label">Duration (min)</label>
+					<input asp-for="Movie.Duration" class="form-control" placeholder="Movie Duration">
+					<span asp-validation-for="Movie.Duration" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Movie.TicketPrice" class="text-white-50 form-label"></label>
+					<input asp-for="Movie.TicketPrice" class="form-control" placeholder="Ticket Price">
+					<span asp-validation-for="Movie.TicketPrice" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Movie.ReleaseDate" class="text-white-50 form-label"></label>
+					<input asp-for="Movie.ReleaseDate" type="date" class="form-control" placeholder="Release Date">
+					<span asp-validation-for="Movie.ReleaseDate" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label class="text-white-50 form-label">Movie Poster</label>
+					<input type="file" id="formFile" name="formFile" class="form-control">
+				</div>
+				<div class="row pt-2">
+					<div class="col-6 col-md-3">
+						<button type="submit" class="btn btn-primary form-control">Edit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts
+	{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}
+
+
