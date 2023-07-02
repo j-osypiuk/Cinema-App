@@ -25,12 +25,12 @@ namespace CinemaApp.Web.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> CreateAsync(Genre genre)
+		public IActionResult Create(Genre genre)
 		{
 			if(ModelState.IsValid)
 			{
 				_db.Genres.Add(genre);
-				await _db.SaveChangesAsync();
+				_db.SaveChanges();
 
 				return RedirectToAction("Index");
 			}
@@ -51,20 +51,19 @@ namespace CinemaApp.Web.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> EditAsync(Genre genre)
+		public IActionResult Edit(Genre genre)
 		{
 			if(ModelState.IsValid)
 			{
 				_db.Genres.Update(genre);
-				await _db.SaveChangesAsync();
+				_db.SaveChanges();
 
 				return RedirectToAction("Index");
 			}
 			return View(genre);
 		}
 
-		[ActionName("Delete")]
-		public async Task<IActionResult> DeleteAsync(int? id)
+		public IActionResult Delete(int? id)
 		{
 			if (id == null || id == 0)
 				return NotFound();
@@ -75,7 +74,7 @@ namespace CinemaApp.Web.Controllers
 				return NotFound();
 
 			_db.Genres.Remove(genre);
-			await _db.SaveChangesAsync();
+			_db.SaveChanges();
 
 			return RedirectToAction("Index");
 		}
