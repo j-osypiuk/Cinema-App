@@ -29,5 +29,8 @@ namespace CinemaApp.Models.DomainModels
 		[Range(1, int.MaxValue, ErrorMessage = "Ticket price must be more expensive than 1.")]
 		public double TicketPrice { get; set; }
 		public string? ImageUrl { get; set; }
-	}
+
+		[ValidateNever]
+		public ICollection<Screening> Screenings { get; set; }
+    }
 }
