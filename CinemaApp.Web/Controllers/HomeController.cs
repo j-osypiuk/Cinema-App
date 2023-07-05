@@ -1,4 +1,4 @@
-﻿using CinemaApp.Web.Models;
+﻿using CinemaApp.Models.DomainModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
