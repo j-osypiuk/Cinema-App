@@ -1,0 +1,69 @@
+﻿@model Screening
+
+<div class="d-flex justify-content-center">
+	<div class="card shadow border-0 mt-4 w-100">
+		<div class="card-header bg-black bg-gradient mt-0 py-1">
+			<div class="row">
+				<div class="col-12 text-center">
+					<h2 class="text-white py-2">Screening</h2>
+				</div>
+			</div>
+		</div>
+		<div class="card-body bg-dark p-4">
+			<div class="table-responsive">
+				<table class="table table-dark table-bordered table-striped">
+
+					<tbody>
+						<tr class="align-middle">
+							<td>Title</td>
+							<td>@Model.Movie.Title</td>
+						</tr>
+						<tr>
+							<td>Director</td>
+							<td>@Model.Movie.Director</td>
+						</tr>
+						<tr>
+							<td>Time</td>
+							<td>@Model.StartTime.ToShortDateString() - @Model.StartTime.ToShortTimeString() : @Model.StartTime.AddMinutes(Model.Movie.Duration).ToShortTimeString()</td>
+						</tr>
+						<tr>
+							<td>Tickets Sold</td>
+							<td>@Model.Tickets.Count</td>
+						</tr>
+						<tr>
+							<td>Seat Reservations</td>
+							<td>
+								@foreach (var seatReservation in Model.SeatReservations)
+								{
+									<span class="me-2">Row: @seatReservation.row Number: @seatReservation.number, </span>
+								}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="row pb-3">
+				<div class="text-end">
+					@if (Model.Tickets.Count > 0)
+					{	
+						<span data-bs-toggle="tooltip" 
+							  data-bs-placement="top"
+							  data-bs-title="Cannot delete screening with seat reservations.">
+							  <a role="button" asp-controller="Screening" asp-action="Delete" class="btn btn-outline-danger rounded rounded-2 disabled"><i class="bi bi-trash3-fill"></i> Delete</a>
+						</span>
+					} else
+					{
+						<a role="button" asp-controller="Screening" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger rounded rounded-2"><i class="bi bi-trash3-fill"></i> Delete</a>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script type="text/javascript">
+		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+	</script>
+}

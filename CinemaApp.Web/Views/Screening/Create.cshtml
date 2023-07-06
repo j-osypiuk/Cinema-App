@@ -1,0 +1,47 @@
+﻿@model ScreeningVM
+
+<div class="d-flex row justify-content-center">
+	<div class="card col-md-6 shadow bg-dark mt-4">
+		<div class="card-header bg-black bg-gradient mt-0 py-1">
+			<div class="row">
+				<div class="col-12 text-center">
+					<h2 class="text-white py-2">Add Screening</h2>
+				</div>
+			</div>
+		</div>
+		<div class="card-body p-4">
+			<form method="post" class="row">
+				<input asp-for="Screening.RoomId" hidden />
+				<div class="mb-3">
+					<label class="text-white-50 form-label">Select Movie</label>
+					<select asp-items="@Model.MovieSelectList" asp-for="SelectedMovieId" class="form-select">
+						<option disabled selected>--Select Movie--</option>
+					</select>
+					<span asp-validation-for="SelectedMovieId" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Screening.StartTime" class="text-white-50 form-label"></label>
+					<input asp-for="Screening.StartTime" class="form-control">
+					<span asp-validation-for="Screening.StartTime" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<input asp-for="Screening.Is3D" type="checkbox" class="form-check-input">
+					<label asp-for="Screening.Is3D" class="text-white-50 form-check-label ms-2"></label>
+					<span asp-validation-for="Screening.Is3D" class="text-danger"></span>
+				</div>
+				<div class="row pt-2">
+					<div class="col-6 col-md-3">
+						<button type="submit" class="btn btn-primary form-control">Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts
+	{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}
