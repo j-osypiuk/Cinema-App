@@ -10,10 +10,6 @@ namespace CinemaApp.Models.ViewModels
 
 		[DisplayName("Movie")]
 		public int SelectedMovieId { get; set; }
-        public IEnumerable<SelectListItem>? MovieSelectList { get; set; }
-
-		[DisplayName("Room")]
-		public int SelectedRoomId { get; set; }
-        public IEnumerable<SelectListItem>? RoomSelectList { get; set; }
-    }
+		public IEnumerable<SelectListItem>? MovieSelectList { get; set; }
+	}
 }
