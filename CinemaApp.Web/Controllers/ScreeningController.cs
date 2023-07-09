@@ -128,7 +128,7 @@ namespace CinemaApp.Web.Controllers
 				return NotFound();
 			}
 
-			var screening = _db.Screenings.Where(x => x.Id == id).Include(x => x.Movie).Include(x => x.Room).Include(x => x.Tickets).Include(x => x.SeatReservations).FirstOrDefault();
+			var screening = _db.Screenings.Where(x => x.Id == id).Include(x => x.Movie).Include(x => x.Room).Include(x => x.Tickets).FirstOrDefault();
 			
 			if (screening == null)
 			{
