@@ -1,9 +1,11 @@
 ﻿using CinemaApp.Models.DomainModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.DataAccess.Data
 {
-	public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -16,7 +18,9 @@ namespace CinemaApp.DataAccess.Data
 		public DbSet<Ticket> Tickets { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
+		{	
+			base.OnModelCreating(modelBuilder);
+
 			modelBuilder.Entity<Movie>(eb =>
 			{
 				eb.Property(x => x.Duration).IsRequired();
