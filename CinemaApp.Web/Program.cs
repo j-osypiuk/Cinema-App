@@ -1,4 +1,5 @@
 using CinemaApp.DataAccess.Data;
+using CinemaApp.DataAccess.Seed;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,4 +32,7 @@ app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
 
+AddDbInitializer.Seed(app);
+
 app.Run();
+
