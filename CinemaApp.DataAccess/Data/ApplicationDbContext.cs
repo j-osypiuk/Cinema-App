@@ -13,7 +13,6 @@ namespace CinemaApp.DataAccess.Data
 		public DbSet<Screening> Screenings { get; set; }
 		public DbSet<Room> Rooms { get; set; }
 		public DbSet<Seat> Seats { get; set; }
-		public DbSet<SeatReservation> seatReservations { get; set; }
 		public DbSet<Ticket> Tickets { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,8 +26,8 @@ namespace CinemaApp.DataAccess.Data
 
 			modelBuilder.Entity<Room>(eb =>
 			{
-				eb.Property(x => x.number).IsRequired();
-				eb.HasIndex(x => x.number).IsUnique();
+				eb.Property(x => x.Number).IsRequired();
+				eb.HasIndex(x => x.Number).IsUnique();
 				eb.HasMany(x => x.Seats).WithOne(x => x.Room).HasForeignKey(x => x.RoomId);
 				eb.HasMany(x => x.Screenings).WithOne(x => x.Room).HasForeignKey(x => x.RoomId);
 			});
@@ -44,20 +43,12 @@ namespace CinemaApp.DataAccess.Data
 				eb.HasMany(x => x.Tickets).WithOne(x => x.Screening).HasForeignKey(x => x.ScreeningId);
 			});
 
-			modelBuilder.Entity<Ticket>(eb =>
-			{
-				eb.HasOne(x => x.SeatReservation)
-				.WithOne(x => x.Ticket)
-				.HasForeignKey<SeatReservation>(x => x.TicketId)
-				.OnDelete(DeleteBehavior.NoAction);
-			});
-
 			modelBuilder.Entity<Seat>(eb =>
 			{
-				eb.HasKey(x => new { x.row, x.number });
-				eb.HasMany(x => x.SeatReservations)
+				eb.HasKey(x => new { x.Row, x.Number, x.RoomId });
+				eb.HasMany(x => x.Tickets)
 				.WithOne(x => x.Seat)
-				.HasForeignKey(x => new { x.row, x.number })
+				.HasForeignKey(x => new { x.Row, x.Number, x.RoomId })
 				.OnDelete(DeleteBehavior.NoAction);
 			});
 		}
