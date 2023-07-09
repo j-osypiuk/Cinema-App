@@ -18,8 +18,4 @@
     <ProjectReference Include="..\CinemaApp.Models\CinemaApp.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\movie\" />
-  </ItemGroup>
-
 </Project>

@@ -1,0 +1,62 @@
+﻿@model List<Screening>
+
+<div class="d-flex justify-content-center row">
+	<div class="card shadow border-0 mt-4 px-0 col-8">
+		<div class="card-header bg-black bg-gradient mt-0 py-1">
+			<div class="row">
+				<div class="col-12 text-center">
+					<h2 class="text-white py-2">@(Model.Count != 0 ? Model[0].Movie.Title : "No screenings of that movie")</h2>
+				</div>
+			</div>
+		</div>
+		<div class="card-body bg-dark p-4">
+			@foreach (var date in Model.Select(x => x.StartTime.Date).Distinct().ToList())
+			{
+				<span class="d-inline-block p-3 bg-primary text-white rounded rounded-1 mb-2">@date.ToShortDateString()</span>
+
+				<div class="table-responsive">
+					<table class="table table-dark table-striped">
+						<thead>
+							<tr>
+								<th class="bg-black bg-gradient">Title</th>
+								<th class="bg-black bg-gradient">Time</th>
+								<th class="bg-black bg-gradient">Room</th>
+								<th class="bg-black bg-gradient">Type</th>
+								<th class="bg-black bg-gradient"></th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var screening in Model)
+							{
+								if (screening.StartTime.Date == date.Date)
+								{
+									<tr>
+										<td class="align-middle py-1">@screening.Movie.Title</td>
+										<td class="align-middle py-1">@screening.StartTime.ToShortTimeString() - @screening.StartTime.AddMinutes(screening.Movie.Duration).ToShortTimeString()</td>
+										<td class="align-middle py-1">@screening.Room.Number</td>
+										<td class="align-middle py-1">
+											@if (screening.Is3D)
+											{
+												<i class="bi bi-badge-3d-fill fs-1"></i>
+											}
+											else
+											{
+												<i class="bi bi-badge-8k-fill fs-1"></i>
+											}
+										</td>
+										<td class="text-end">
+											<a role="button" asp-controller="Ticket" asp-action="Create" asp-route-screeningId="@screening.Id" class="btn fw-bold fs-4 p-2 me-3 btn-warning text-black rounded rounded-2">
+												<i class="bi bi-basket2-fill fs-4"></i> Buy Ticket
+											</a>
+										</td>
+									</tr>
+								}
+							}
+						</tbody>
+					</table>
+				</div>
+				<hr />
+			}
+		</div>
+	</div>
+</div>
