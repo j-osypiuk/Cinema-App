@@ -33,9 +33,9 @@
 						<tr>
 							<td>Seat Reservations</td>
 							<td>
-								@foreach (var seatReservation in Model.SeatReservations)
+								@foreach (var seatReservation in Model.Tickets)
 								{
-									<span class="me-2">Row: @seatReservation.row Number: @seatReservation.number, </span>
+									<span class="me-2">Row: @seatReservation.Row Number: @seatReservation.Number, </span>
 								}
 							</td>
 						</tr>
