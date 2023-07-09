@@ -22,7 +22,7 @@
                 <p class="card-text text-white text-opacity-50 my-2"><span class="text-white text-opacity-75 fw-bold">Stars: </span>@Model.MainActor</p>
                 <p class="card-text text-white text-opacity-50 my-2"><span class="text-white text-opacity-75 fw-bold">Price: </span>@Model.TicketPrice.ToString("C")</p>
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn fs-3 text-black btn-warning rounded rounded-3">Buy ticket <i class="bi bi-film ms-2"></i></button>
+                    <a role="button" asp-controller="Ticket" asp-action="Index" asp-route-movieId="@Model.Id" class="btn fs-3 text-black btn-warning rounded rounded-3">Watch Movie <i class="bi bi-film ms-2"></i></a>
                 </div>
             </div>
         </div>

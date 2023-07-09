@@ -1,0 +1,21 @@
+﻿@model List<Screening>
+
+<div class="d-flex justify-content-center">
+	<div class="card shadow border-0 mt-4 w-100">
+		<div class="card-header bg-black bg-gradient mt-0 py-1">
+			<div class="row">
+				<div class="col-12 text-center">
+					<h2 class="text-white py-2">Choose Room</h2>
+				</div>
+			</div>
+		</div>
+		<div class="card-body bg-dark p-4">
+			<div class="row d-flex justify-content-around">
+				<a asp-controller="Room" asp-action="Details" asp-route-id="1" class="btn btn-primary col-lg-2 fs-1 my-3 rounded rounded-2"><i class="bi bi-tv d-inline-block mb-3" style="font-size:50px"></i><br />1 Room</a>
+				<a asp-controller="Room" asp-action="Details" asp-route-id="2" class="btn btn-primary col-lg-2 fs-1 my-3 rounded rounded-2"><i class="bi bi-tv d-inline-block mb-3" style="font-size:50px"></i><br />2 Room</a>
+				<a asp-controller="Room" asp-action="Details" asp-route-id="3" class="btn btn-primary col-lg-2 fs-1 my-3 rounded rounded-2"><i class="bi bi-tv d-inline-block mb-3" style="font-size:50px"></i><br />3 Room</a>
+				<a asp-controller="Room" asp-action="Details" asp-route-id="4" class="btn btn-primary col-lg-2 fs-1 my-3 rounded rounded-2"><i class="bi bi-tv d-inline-block mb-3" style="font-size:50px"></i><br />4 Room</a>
+			</div>
+		</div>
+	</div>
+</div>
