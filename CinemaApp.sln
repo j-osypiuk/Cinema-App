@@ -5,9 +5,11 @@ VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Web", "CinemaApp.Web\CinemaApp.Web.csproj", "{41F62744-6118-4429-A9CE-49CC2002EF14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp.Models", "CinemaApp.Models\CinemaApp.Models.csproj", "{27455C5C-94A5-4D91-B86E-CB3F0CD0B8FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Models", "CinemaApp.Models\CinemaApp.Models.csproj", "{27455C5C-94A5-4D91-B86E-CB3F0CD0B8FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp.DataAccess", "CinemaApp.DataAccess\CinemaApp.DataAccess.csproj", "{09FC4CC7-AE9F-4E26-BF26-AF0583EBBA3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.DataAccess", "CinemaApp.DataAccess\CinemaApp.DataAccess.csproj", "{09FC4CC7-AE9F-4E26-BF26-AF0583EBBA3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{3268674B-360C-4400-B4F7-A7A557FF80D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{09FC4CC7-AE9F-4E26-BF26-AF0583EBBA3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09FC4CC7-AE9F-4E26-BF26-AF0583EBBA3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09FC4CC7-AE9F-4E26-BF26-AF0583EBBA3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3268674B-360C-4400-B4F7-A7A557FF80D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3268674B-360C-4400-B4F7-A7A557FF80D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3268674B-360C-4400-B4F7-A7A557FF80D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3268674B-360C-4400-B4F7-A7A557FF80D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,14 +1,18 @@
 ﻿using CinemaApp.DataAccess.Data;
 using CinemaApp.Models.DomainModels;
 using CinemaApp.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Runtime.CompilerServices;
+using Utility;
 
 namespace CinemaApp.Web.Controllers
 {
-	public class ScreeningController : Controller
+    [Authorize(Roles = SD.Role_Employee)]
+    public class ScreeningController : Controller
 	{
 		private readonly ApplicationDbContext _db;
 		private readonly IEnumerable<SelectListItem> _selectedMovieList;

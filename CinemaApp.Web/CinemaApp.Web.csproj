@@ -11,7 +11,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-	<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.7" />
+	<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.8" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.7">
 		<PrivateAssets>all</PrivateAssets>
 		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,10 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CinemaApp.DataAccess\CinemaApp.DataAccess.csproj" />
     <ProjectReference Include="..\CinemaApp.Models\CinemaApp.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\" />
+    <ProjectReference Include="..\Utility\Utility.csproj" />
   </ItemGroup>
 
 </Project>

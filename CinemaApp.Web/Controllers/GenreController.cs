@@ -1,9 +1,12 @@
 ﻿using CinemaApp.DataAccess.Data;
 using CinemaApp.Models.DomainModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Utility;
 
 namespace CinemaApp.Web.Controllers
 {
+	[Authorize(Roles = SD.Role_Employee)]
 	public class GenreController : Controller
 	{
 		private readonly ApplicationDbContext _db;

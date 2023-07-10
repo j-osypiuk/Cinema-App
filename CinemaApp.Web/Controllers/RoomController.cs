@@ -1,11 +1,15 @@
 ﻿using CinemaApp.DataAccess.Data;
 using CinemaApp.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using Utility;
 
 namespace CinemaApp.Web.Controllers
 {
-	public class RoomController : Controller
+    [Authorize(Roles = SD.Role_Employee)]
+    public class RoomController : Controller
 	{
 		private readonly ApplicationDbContext _db;
 		public RoomController(ApplicationDbContext db)

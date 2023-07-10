@@ -16,8 +16,9 @@ namespace CinemaApp.DataAccess.Data
 		public DbSet<Room> Rooms { get; set; }
 		public DbSet<Seat> Seats { get; set; }
 		public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{	
 			base.OnModelCreating(modelBuilder);
 
