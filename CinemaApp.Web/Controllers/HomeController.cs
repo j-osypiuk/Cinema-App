@@ -33,6 +33,24 @@ namespace CinemaApp.Web.Controllers
 			return View(homeVM);
 		}
 
+		public IActionResult GenreMovies(int? genreId)
+		{
+			if (genreId == null || genreId == 0)
+			{
+				return NotFound();
+			}
+
+			var genreMovies = (from movie in _db.Movies
+							  join movieGenre in _db.MovieGenres 
+							  on movie.Id equals movieGenre.MovieId
+							  where movieGenre.GenreId == genreId 
+							  select movie).Include(x => x.MovieGenres).ThenInclude(x => x.Genre).ToList();
+
+			TempData["GenreName"] = _db.Genres.Find(genreId).Name;
+
+			return View(genreMovies);
+		}
+
 		public IActionResult Privacy()
 		{
 			return View();

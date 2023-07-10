@@ -37,7 +37,9 @@
                 @foreach (var genre in Model.Genres)
                 {
                     <li class="nav-item mb-1 mx-0">
-                        <a class="btn btn-primary text-white-50 w-100" role="button">@genre.Name</a>
+                        <a class="btn btn-primary text-white-50 w-100" role="button" asp-controller="Home" asp-action="GenreMovies" asp-route-genreId="@genre.Id">
+                            @genre.Name
+                        </a>
                     </li>
                 }
             </ul>

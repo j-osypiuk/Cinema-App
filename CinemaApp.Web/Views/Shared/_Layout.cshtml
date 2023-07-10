@@ -20,9 +20,12 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link text-white-50" href="#movies">Movies</a>
-                        </li>
+                        @if (@ViewContext.HttpContext.Request.Path == "/")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white-50" href="#movies">Movies</a>
+                            </li>
+                        }
                         @if (User.IsInRole(SD.Role_Employee))
                         {
                             <li class="dropdown">
