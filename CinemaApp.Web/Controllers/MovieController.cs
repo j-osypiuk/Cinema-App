@@ -8,8 +8,6 @@ using Utility;
 
 namespace CinemaApp.Web.Controllers
 {
-
-	[Authorize(Roles = SD.Role_Employee)]
     public class MovieController : Controller
 	{
 		private readonly ApplicationDbContext _db;
@@ -20,13 +18,16 @@ namespace CinemaApp.Web.Controllers
 			_db = db;
 			_webHostEnvironment = webHostEnvironment;
 		}
-		public IActionResult Index()
+
+        [Authorize(Roles = SD.Role_Employee)]
+        public IActionResult Index()
 		{	
 			var movies = _db.Movies.Include(x => x.MovieGenres).ThenInclude(x => x.Genre).AsNoTracking().ToList();
 			return View(movies);
 		}
 
-		public IActionResult Create()
+        [Authorize(Roles = SD.Role_Employee)]
+        public IActionResult Create()
 		{	
 			var genres = _db.Genres.ToList();
 			MovieVM movieVM = new MovieVM
@@ -38,7 +39,8 @@ namespace CinemaApp.Web.Controllers
 			return View(movieVM);
 		}
 
-		[HttpPost]
+        [Authorize(Roles = SD.Role_Employee)]
+        [HttpPost]
 		public IActionResult Create(MovieVM movieVM, IFormFile? formFile)
 		{
 			if (ModelState.IsValid)
@@ -79,7 +81,8 @@ namespace CinemaApp.Web.Controllers
 			return View(movie);
 		}
 
-		public IActionResult Edit(int? id)
+        [Authorize(Roles = SD.Role_Employee)]
+        public IActionResult Edit(int? id)
 		{
 			if (id == null || id == 0)
 				return NotFound();
@@ -99,7 +102,8 @@ namespace CinemaApp.Web.Controllers
 			return View(movieVM);
 		}
 
-		[HttpPost]
+        [Authorize(Roles = SD.Role_Employee)]
+        [HttpPost]
 		public IActionResult Edit(MovieVM movieVM, IFormFile? formFile)
 		{
 			if (ModelState.IsValid)
@@ -159,7 +163,8 @@ namespace CinemaApp.Web.Controllers
 			return View();
 		}
 
-		public IActionResult Delete(int? id)
+        [Authorize(Roles = SD.Role_Employee)]
+        public IActionResult Delete(int? id)
 		{
 			if (id == null || id == 0)
 				return NotFound();

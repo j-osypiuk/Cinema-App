@@ -11,7 +11,7 @@
 </head>
 <body class="bg-dark">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary box-shadow mb-3">
+        <nav id="navbar" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">CinemaX</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -21,19 +21,19 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-white-50" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-white-50" href="#movies">Movies</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white-50" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="dropdown">
-                            <a class="nav-link dropdown-toggle text-white-50" role="button" href="#" data-bs-toggle="dropdown">Content Managment</a>
-                            <ul class="dropdown-menu dropdown-menu-dark border border-1 border-primary">
-                                <li><a asp-area="" asp-controller="Genre" asp-action="Index" class="dropdown-item text-white-50">Genres</a></li>
-                                <li><a asp-area="" asp-controller="Movie" asp-action="Index" class="dropdown-item text-white-50">Movies</a></li>
-                                <li><a asp-area="" asp-controller="Room" asp-action="Index" class="dropdown-item text-white-50">Screenings</a></li>
-                            </ul>
-                        </li>
+                        @if (User.IsInRole(SD.Role_Employee))
+                        {
+                            <li class="dropdown">
+                                <a class="nav-link dropdown-toggle text-white-50" role="button" href="#" data-bs-toggle="dropdown">Content Managment</a>
+                                <ul class="dropdown-menu dropdown-menu-dark border border-1 border-primary">
+                                    <li><a asp-area="" asp-controller="Genre" asp-action="Index" class="dropdown-item text-white-50">Genres</a></li>
+                                    <li><a asp-area="" asp-controller="Movie" asp-action="Index" class="dropdown-item text-white-50">Movies</a></li>
+                                    <li><a asp-area="" asp-controller="Room" asp-action="Index" class="dropdown-item text-white-50">Screenings</a></li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial"></partial>
                 </div>
@@ -48,7 +48,7 @@
 
     <footer class="footer bg-primary">
         <div class="container ">
-            &copy; 2023 - CinemaApp.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - Cinemax - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
