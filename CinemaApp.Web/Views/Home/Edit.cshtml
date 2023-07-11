@@ -1,0 +1,78 @@
+﻿@model HomeContent
+
+<div class="d-flex row justify-content-center">
+	<div class="card col-lg-6 shadow bg-dark mt-4">
+		<div class="card-header bg-black bg-gradient mt-0 py-1">
+			<div class="row">
+				<div class="col-12 text-center">
+					<h2 class="text-white py-2">Edit Home Content</h2>
+				</div>
+			</div>
+		</div>
+		<div class="card-body p-4">
+			<form method="post" class="row" enctype="multipart/form-data">
+				<input asp-for="Id" hidden />
+				<input asp-for="CarouselImgUrl_1" hidden />
+				<input asp-for="CarouselImgUrl_2" hidden />
+				<input asp-for="CarouselImgUrl_3" hidden />
+				<div class="mb-3">
+					<label asp-for="CarouselImgUrl_1" class="text-white-50 form-label"></label>
+					<input type="file" id="CarouselImg_1" name="CarouselImg_1" class="form-control" />
+				</div>
+				<div class="mb-3">
+					<label asp-for="CarouselImgUrl_2" class="text-white-50 form-label"></label>
+					<input type="file" id="CarouselImg_2" name="CarouselImg_2" class="form-control" />
+				</div>
+				<div class="mb-3">
+					<label asp-for="CarouselImgUrl_3" class="text-white-50 form-label"></label>
+					<input type="file" id="CarouselImg_3" name="CarouselImg_3" class="form-control" />
+				</div>
+				<hr />
+				<div class="mb-3">
+					<label asp-for="BlogTitle_1" class="text-white-50 form-label"></label>
+					<input asp-for="BlogTitle_1" class="form-control">
+					<span asp-validation-for="BlogTitle_1" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="BlogContent_1" class="text-white-50 form-label"></label>
+					<textarea asp-for="BlogContent_1" class="form-control" style="height:450px;"></textarea>
+					<span asp-validation-for="BlogContent_1" class="text-danger"></span>
+				</div>
+				<hr />
+				<div class="mb-3">
+					<label asp-for="BlogTitle_2" class="text-white-50 form-label"></label>
+					<input asp-for="BlogTitle_2" class="form-control">
+					<span asp-validation-for="BlogTitle_2" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="BlogContent_2" class="text-white-50 form-label"></label>
+					<textarea asp-for="BlogContent_2" class="form-control" style="height:450px;"></textarea>
+					<span asp-validation-for="BlogContent_2" class="text-danger"></span>
+				</div>
+				<hr />
+				<div class="mb-3">
+					<label asp-for="BlogTitle_3" class="text-white-50 form-label"></label>
+					<input asp-for="BlogTitle_3" class="form-control">
+					<span asp-validation-for="BlogTitle_3" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="BlogContent_3" class="text-white-50 form-label"></label>
+					<textarea asp-for="BlogContent_3" class="form-control" style="height:450px;"></textarea>
+					<span asp-validation-for="BlogContent_3" class="text-danger"></span>
+				</div>
+				<div class="row pt-2">
+					<div class="col-4 col-xl-3">
+						<button type="submit" class="btn btn-primary form-control">Save</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts
+	{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}

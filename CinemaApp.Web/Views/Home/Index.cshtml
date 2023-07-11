@@ -8,13 +8,13 @@
     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="~/images/pagination_placeholder.jpg" class="d-block w-100" alt="...">
+                <img src="@Model.HomeContent.CarouselImgUrl_1" class="d-block w-100" alt="Carousel image 1">
             </div>
             <div class="carousel-item">
-                <img src="~/images/pagination_placeholder.jpg" class="d-block w-100" alt="...">
+                <img src="@Model.HomeContent.CarouselImgUrl_2" class="d-block w-100" alt="Carousel image 1">
             </div>
             <div class="carousel-item">
-                <img src="~/images/pagination_placeholder.jpg" class="d-block w-100" alt="...">
+                <img src="@Model.HomeContent.CarouselImgUrl_3" class="d-block w-100" alt="Carousel image 1">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -47,35 +47,19 @@
         <div class="col-lg-9 col-md-8 col-sm-8">
             <h3 class="text-white text-opacity-75"><i class="bi bi-body-text"></i> Blog</h3>
             <hr />
-            <h5 class="text-white text-opacity-75">Title 1</h5>
+            <h5 class="text-white text-opacity-75">@Model.HomeContent.BlogTitle_1</h5>
             <p class="text-white-50">
-                Nullam et mauris ac nibh auctor faucibus. Quisque volutpat malesuada dui, nec dignissim velit tincidunt in. Ut nec orci molestie,
-                rutrum augue ut, iaculis risus. Duis egestas maximus tortor ac pharetra. Nulla sodales pellentesque nunc ac mollis. Donec eleifend 
-                magna sit amet nisi vestibulum, a finibus arcu dignissim. Curabitur aliquet, mauris vitae rutrum tincidunt, est ex pharetra lectus, 
-                et placerat eros elit id lacus. Sed sed suscipit erat, ut pretium eros. Nullam congue turpis a urna facilisis consequat. Morbi dapibus
-                mi vitae eros porta, sit amet pretium sapien molestie. Aenean consequat non dui eu dapibus. Vestibulum eget dignissim neque. Duis
-                interdum dolor vel nibh hendrerit bibendum. In nisl leo, interdum quis elementum at, finibus ac orci. Morbi sed interdum turpis.
-                Aenean vehicula tellus sit amet euismod ullamcorper.
+                @Model.HomeContent.BlogContent_1
             </p>
             <hr />
-            <h5 class="text-white text-opacity-75">Title 2</h5>
+            <h5 class="text-white text-opacity-75">@Model.HomeContent.BlogTitle_2</h5>
             <p class="text-white-50">
-                In interdum mauris ex, sit amet ornare dui eleifend ut. Pellentesque velit velit, accumsan id pharetra in, mattis mattis diam. Orci 
-                varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce porta est sollicitudin justo posuere, at 
-                commodo lorem suscipit. Mauris vel tellus in risus porta vestibulum. Curabitur sit amet tortor justo. Ut in dui tincidunt, convallis 
-                quam a, varius orci. Proin vestibulum nec nulla quis accumsan. Etiam consectetur, nibh ac venenatis porta, ante nisl ornare eros,
-                quis laoreet arcu lectus sed enim. Nunc aliquet diam et nulla tincidunt aliquam. Nam scelerisque, mi nec vestibulum vestibulum,
-                sapien lacus congue tortor, quis auctor justo purus vitae lorem. Maecenas tincidunt nibh nec tincidunt congue. Donec interdum vitae 
-                ante quis viverra. Ut molestie nibh sit amet dolor ornare congue.
+                @Model.HomeContent.BlogContent_2
             </p>
             <hr />
-            <h5 class="text-white text-opacity-75">Title 3</h5>
+            <h5 class="text-white text-opacity-75">@Model.HomeContent.BlogTitle_3</h5>
             <p class="text-white-50">
-                Donec at nibh magna. Fusce arcu massa, accumsan vitae eros non, sollicitudin laoreet lorem. In id justo eu mauris bibendum suscipit.
-                Vestibulum cursus non orci a ullamcorper. Vivamus et maximus nisl. In hac habitasse platea dictumst. Praesent sed erat leo. Praesent
-                dolor augue, blandit eget tincidunt eu, scelerisque in nisl. Vestibulum suscipit mauris eu lobortis vulputate. Sed ac lectus venenatis,
-                tincidunt nunc non, sollicitudin ligula. Aliquam et vulputate erat. Sed iaculis lectus augue, at congue lorem eleifend id. Maecenas
-                pellentesque nisi vitae lorem dictum ultrices.
+                @Model.HomeContent.BlogContent_3
             </p>
         </div>
     </div>
