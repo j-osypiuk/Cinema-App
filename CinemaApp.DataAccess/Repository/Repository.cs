@@ -17,7 +17,7 @@ namespace CinemaApp.DataAccess.Repository
 
         public async Task AddAsync(TEntity entity)
         {
-            await _db.Set<TEntity>().AddAsync(entity);
+            await _dbSet.AddAsync(entity);
         }
 
         public async Task<IEnumerable<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate)
@@ -30,7 +30,7 @@ namespace CinemaApp.DataAccess.Repository
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<TEntity?> GetByIdAsync(int id)
+        public async Task<TEntity?> GetAsync(int? id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -40,7 +40,7 @@ namespace CinemaApp.DataAccess.Repository
             _dbSet.Remove(entity);   
         }
 
-        public async Task<TEntity?> FindByAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbSet.Where(predicate).FirstOrDefaultAsync();
         }
