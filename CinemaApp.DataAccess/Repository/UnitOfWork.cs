@@ -10,12 +10,15 @@ namespace CinemaApp.DataAccess.Repository
         public IMovieRepository Movie { get; private set; }
         public IMovieGenreRepository MovieGenre { get; private set; }
 
+        public IRoomRepository Room { get; private set; }
+
         public UnitOfWork(ApplicationDbContext db)
         {   
             _db = db;
             Genre = new GenreRepository(db);
             Movie = new MovieRepository(db);
             MovieGenre = new MovieGenreRepository(db);
+            Room = new RoomRepository(db);
         }
 
         public async Task SaveAsync()

@@ -5,6 +5,7 @@
         IGenreRepository Genre { get; }
         IMovieRepository Movie { get; }
         IMovieGenreRepository MovieGenre { get; }
+        IRoomRepository Room { get; }
         Task SaveAsync();
     }
 }
