@@ -11,6 +11,7 @@ namespace CinemaApp.DataAccess.Repository
         public IMovieGenreRepository MovieGenre { get; private set; }
         public IRoomRepository Room { get; private set; }
 		public IScreeningRepository Screening { get; private set; }
+		public ITicketRepository Ticket { get; private set; }
 
 		public UnitOfWork(ApplicationDbContext db)
         {   
@@ -20,6 +21,7 @@ namespace CinemaApp.DataAccess.Repository
             MovieGenre = new MovieGenreRepository(db);
             Room = new RoomRepository(db);
             Screening = new ScreeningRepository(db);
+            Ticket = new TicketRepository(db);
         }
 
         public async Task SaveAsync()
