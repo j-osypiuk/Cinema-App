@@ -10,19 +10,6 @@ namespace CinemaApp.DataAccess.Repository
 	{
         public ScreeningRepository(ApplicationDbContext db) : base(db) { }
 
-		public async Task<IEnumerable<Screening>> GetByDateAndRoomAsync(Expression<Func<Screening, bool>> predicate, string? includeProperties = null)
-		{
-			IQueryable<Screening> query = _dbSet;
-
-			if (predicate != null)
-			{
-				query = query.Where(predicate);
-			}
-
-			query = IncludeProperties(query, includeProperties);
-			return await query.ToListAsync();
-		}
-
 		public void Update(Screening screening)
 		{
 			_dbSet.Update(screening);
