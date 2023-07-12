@@ -67,7 +67,7 @@ namespace CinemaApp.DataAccess.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        private IQueryable<TEntity> IncludeProperties(IQueryable<TEntity> query, string? properties) 
+        protected IQueryable<TEntity> IncludeProperties(IQueryable<TEntity> query, string? properties) 
         {
             if (!string.IsNullOrEmpty(properties))
             {
