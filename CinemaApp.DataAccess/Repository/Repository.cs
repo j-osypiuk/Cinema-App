@@ -2,6 +2,7 @@
 using CinemaApp.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 
 namespace CinemaApp.DataAccess.Repository
 {
@@ -20,14 +21,26 @@ namespace CinemaApp.DataAccess.Repository
             await _dbSet.AddAsync(entity);
         }
 
-        public async Task<IEnumerable<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, string? includeProperties = null)
         {
-            return await _dbSet.Where(predicate).ToListAsync();
+            IQueryable<TEntity> query = _dbSet;
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            query = IncludeProperties(query, includeProperties);
+
+            return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync(string? includeProperties = null)
         {
-            return await _dbSet.ToListAsync();
+            IQueryable<TEntity> query = _dbSet;
+            
+            query = IncludeProperties(query, includeProperties);
+
+            return await query.ToListAsync();
         }
 
         public async Task<TEntity?> GetAsync(int? id)
@@ -40,9 +53,30 @@ namespace CinemaApp.DataAccess.Repository
             _dbSet.Remove(entity);   
         }
 
-        public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<TEntity?> GetByAsync(Expression<Func<TEntity, bool>> predicate, string? includeProperties = null)
         {
-            return await _dbSet.Where(predicate).FirstOrDefaultAsync();
+            IQueryable<TEntity> query = _dbSet;
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            query = IncludeProperties(query, includeProperties);
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+        private IQueryable<TEntity> IncludeProperties(IQueryable<TEntity> query, string? properties) 
+        {
+            if (!string.IsNullOrEmpty(properties))
+            {
+                foreach (var property in properties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);
+                }
+            }
+            return query;
         }
     }
 }

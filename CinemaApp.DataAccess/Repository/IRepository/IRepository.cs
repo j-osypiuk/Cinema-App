@@ -6,9 +6,9 @@ namespace CinemaApp.DataAccess.Repository.IRepository
     public interface IRepository<TEntity> where TEntity : class
     {
         Task<TEntity?> GetAsync(int? id);
-        Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<IEnumerable<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate);
-        Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity?> GetByAsync(Expression<Func<TEntity, bool>> predicate, string? includeProperties = null);
+        Task<IEnumerable<TEntity>> GetAllAsync(string? includeProperties = null);
+        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, string? includeProperties = null);
         Task AddAsync(TEntity entity);
         void Remove(TEntity entity);
     }
