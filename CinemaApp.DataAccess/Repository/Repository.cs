@@ -1,5 +1,6 @@
 ﻿using CinemaApp.DataAccess.Data;
 using CinemaApp.DataAccess.Repository.IRepository;
+using CinemaApp.Models.DomainModels;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
@@ -43,7 +44,7 @@ namespace CinemaApp.DataAccess.Repository
             return await query.ToListAsync();
         }
 
-        public async Task<TEntity?> GetAsync(int? id)
+		public async Task<TEntity?> GetAsync(int? id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -67,7 +68,7 @@ namespace CinemaApp.DataAccess.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        protected IQueryable<TEntity> IncludeProperties(IQueryable<TEntity> query, string? properties) 
+        private IQueryable<TEntity> IncludeProperties(IQueryable<TEntity> query, string? properties) 
         {
             if (!string.IsNullOrEmpty(properties))
             {

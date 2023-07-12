@@ -12,6 +12,7 @@ namespace CinemaApp.DataAccess.Repository
         public IRoomRepository Room { get; private set; }
 		public IScreeningRepository Screening { get; private set; }
 		public ITicketRepository Ticket { get; private set; }
+		public IHomeContentRepository HomeContent { get; private set; }
 
 		public UnitOfWork(ApplicationDbContext db)
         {   
@@ -22,6 +23,7 @@ namespace CinemaApp.DataAccess.Repository
             Room = new RoomRepository(db);
             Screening = new ScreeningRepository(db);
             Ticket = new TicketRepository(db);
+            HomeContent = new HomeContentRepository(db);
         }
 
         public async Task SaveAsync()

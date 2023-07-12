@@ -1,4 +1,5 @@
 ﻿using CinemaApp.DataAccess.Data;
+using CinemaApp.DataAccess.Repository.IRepository;
 using CinemaApp.Models.DomainModels;
 using CinemaApp.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -11,66 +12,67 @@ namespace CinemaApp.Web.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly ILogger<HomeController> _logger;
-
-		private readonly ApplicationDbContext _db;
+		private readonly IUnitOfWork _unitOfWork;
 
 		private readonly IWebHostEnvironment _webHostEnvironment;
-		public HomeController(ILogger<HomeController> logger, ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
+		public HomeController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
 		{
-			_logger = logger;
-			_db = db;
+			_unitOfWork = unitOfWork;
 			_webHostEnvironment = webHostEnvironment;
 		}
 
-		public IActionResult Index()
-		{	
-			var genres = _db.Genres.OrderBy(x => x.Name).ToList();
-			var movies = _db.Movies.Include(x => x.MovieGenres).ThenInclude(x => x.Genre).ToList();
-			var homeContent = _db.HomeContents.FirstOrDefault();
+		public async Task<IActionResult> Index()
+		{
+			var genres = await _unitOfWork.Genre.GetAllAsync();
+			var movies =  await _unitOfWork.Movie.GetAllAsync(includeProperties: "MovieGenres");
+			foreach (var movie in movies)
+			{
+				foreach (var movieGenre in movie.MovieGenres)
+				{
+					movieGenre.Genre = await _unitOfWork.Genre.GetAsync(movieGenre.GenreId);
+				}
+			}
+			var homeContent = await _unitOfWork.HomeContent.GetAllAsync();
 
 			var homeVM = new HomeVM
 			{	
-				HomeContent = homeContent,
-				Genres = genres,
+				HomeContent = homeContent.FirstOrDefault(),
+				Genres = genres.OrderBy(x => x.Name),
 				Movies = movies,
 			};
 
 			return View(homeVM);
 		}
 
-		public IActionResult GenreMovies(int? genreId)
+		public async Task<IActionResult> GenreMovies(int? genreId)
 		{
 			if (genreId == null || genreId == 0)
 			{
 				return NotFound();
 			}
 
-			var genreMovies = (from movie in _db.Movies
-							  join movieGenre in _db.MovieGenres 
-							  on movie.Id equals movieGenre.MovieId
-							  where movieGenre.GenreId == genreId 
-							  select movie).Include(x => x.MovieGenres).ThenInclude(x => x.Genre).ToList();
+			var genre = await _unitOfWork.Genre.GetAsync(genreId);
+			var genreMovies = await _unitOfWork.HomeContent.GetGenreMoviesAsync(genreId);
 
-			TempData["GenreName"] = _db.Genres.Find(genreId).Name;
+			TempData["GenreName"] = genre.Name;
 
 			return View(genreMovies);
 		}
 
-		public IActionResult Edit()
-		{	
-			var homeContent = _db.HomeContents.FirstOrDefault();
+		public async Task<IActionResult> Edit()
+		{
+			var homeContent = await _unitOfWork.HomeContent.GetAllAsync();
 
 			if (homeContent == null)
 			{
 				return NotFound();
 			}
 
-			return View(homeContent);
+			return View(homeContent.FirstOrDefault());
 		}
 
 		[HttpPost] 
-		public IActionResult Edit(HomeContent? homeContent, IFormFile? CarouselImg_1, IFormFile? CarouselImg_2, IFormFile? CarouselImg_3)
+		public async Task<IActionResult> Edit(HomeContent? homeContent, IFormFile? CarouselImg_1, IFormFile? CarouselImg_2, IFormFile? CarouselImg_3)
 		{
 			var carouselImgs = new List<IFormFile> { CarouselImg_1, CarouselImg_2, CarouselImg_3 };
 
@@ -123,8 +125,8 @@ namespace CinemaApp.Web.Controllers
 						}
 					}
 				}
-				_db.HomeContents.Update(homeContent);
-				_db.SaveChanges();
+				_unitOfWork.HomeContent.Update(homeContent);
+				await _unitOfWork.SaveAsync();
 
 				return RedirectToAction("Index", "Home");
 			}
