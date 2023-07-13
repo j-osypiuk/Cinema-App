@@ -37,8 +37,8 @@ namespace CinemaApp.Web.Controllers
 			{
 				screening.Movie = await _unitOfWork.Movie.GetAsync(screening.MovieId);
 			}
-			
-			room.Screenings = room.Screenings.OrderBy(x => x.StartTime).ToList();
+
+			room.Screenings = room.Screenings.Where(x => x.StartTime.Date >= DateTime.Today).OrderBy(x => x.StartTime).ToList();
 
 			return View(room);
 		}

@@ -17,8 +17,6 @@
 			</div>
 			@foreach (var date in Model.Screenings.Select(x => x.StartTime.Date).Distinct())
 			{	
-				@if (date.Date >= DateTime.Today)
-				{
 				<span class="d-inline-block p-3 bg-primary text-white rounded rounded-1 mb-2">@date.ToShortDateString()</span>
 
 				<div class="table-responsive">
@@ -69,7 +67,6 @@
 					</table>
 				</div>
 				<hr />
-				}
 			}
 		</div>
 	</div>
