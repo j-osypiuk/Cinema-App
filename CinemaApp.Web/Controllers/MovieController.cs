@@ -64,6 +64,9 @@ namespace CinemaApp.Web.Controllers
 						formFile.CopyTo(fileStream);
 					}
 					movieVM.Movie.ImageUrl = @"\images\movie\" + fileName;
+				} else
+				{
+					movieVM.Movie.ImageUrl = @"\images\default\default-movie-poster.jpg";
 				}
 
 				movieVM.Movie.MovieGenres = movieVM.SelectedGenreIds.Select(id => new MovieGenre { GenreId = id }).ToList();
@@ -78,8 +81,8 @@ namespace CinemaApp.Web.Controllers
 
 		public async Task<IActionResult> Details(int? id)
 		{
-			var movieGenres = await _unitOfWork.MovieGenre.GetAllAsync(includeProperties: "Movie,Genre");
-			var movie = movieGenres.Where(x => x.MovieId == id).Select(x => x.Movie).FirstOrDefault();
+			var movieGenres = await _unitOfWork.MovieGenre.FindAsync(x => x.MovieId == id, includeProperties: "Movie,Genre");
+			var movie = movieGenres.Select(x => x.Movie).FirstOrDefault();
 
 			return View(movie);
 		}
@@ -92,8 +95,8 @@ namespace CinemaApp.Web.Controllers
 				return NotFound();
 			}
 
-			var movieGenres = await _unitOfWork.MovieGenre.GetAllAsync(includeProperties: "Movie,Genre");
-			var movie = movieGenres.Where(x => x.MovieId == id).Select(x => x.Movie).FirstOrDefault();
+			var movieGenres = await _unitOfWork.MovieGenre.FindAsync(x => x.MovieId == id, includeProperties: "Movie,Genre");
+			var movie = movieGenres.Select(x => x.Movie).FirstOrDefault();
 
 			if (movie == null)
 			{
@@ -133,7 +136,7 @@ namespace CinemaApp.Web.Controllers
 					{
 						var oldImagePath = Path.Combine(wwwRootPath, movieVM.Movie.ImageUrl.TrimStart('\\'));
 
-						if (System.IO.File.Exists(oldImagePath))
+						if (System.IO.File.Exists(oldImagePath) && !oldImagePath.Contains("default"))
 						{
 							System.IO.File.Delete(oldImagePath);
 						}
@@ -166,6 +169,7 @@ namespace CinemaApp.Web.Controllers
 
 				_unitOfWork.Movie.Update(movieVM.Movie);
 				await _unitOfWork.SaveAsync();
+
 				return RedirectToAction("Index");
 			}
 			return View();
@@ -188,11 +192,11 @@ namespace CinemaApp.Web.Controllers
 
 			if (!string.IsNullOrEmpty(movie.ImageUrl))
 			{
-				var fileToDeletePath = Path.Combine(_webHostEnvironment.WebRootPath, movie.ImageUrl.TrimStart('\\'));
+				var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, movie.ImageUrl.TrimStart('\\'));
 
-				if (System.IO.File.Exists(fileToDeletePath))
+				if (System.IO.File.Exists(oldImagePath) && !oldImagePath.Contains("default"))
 				{
-					System.IO.File.Delete(fileToDeletePath);
+					System.IO.File.Delete(oldImagePath);
 				}
 			}
 
