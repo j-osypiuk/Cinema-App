@@ -1,11 +1,7 @@
-﻿using CinemaApp.DataAccess.Data;
-using CinemaApp.DataAccess.Repository.IRepository;
+﻿using CinemaApp.DataAccess.Repository.IRepository;
 using CinemaApp.Models.DomainModels;
 using CinemaApp.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Collections.Specialized;
 using System.Diagnostics;
 
 namespace CinemaApp.Web.Controllers
@@ -23,16 +19,10 @@ namespace CinemaApp.Web.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var genres = await _unitOfWork.Genre.GetAllAsync();
-			var movies =  await _unitOfWork.Movie.GetAllAsync(includeProperties: "MovieGenres");
-			foreach (var movie in movies)
-			{
-				foreach (var movieGenre in movie.MovieGenres)
-				{
-					movieGenre.Genre = await _unitOfWork.Genre.GetAsync(movieGenre.GenreId);
-				}
-			}
+			var movieGenres = await _unitOfWork.MovieGenre.GetAllAsync(includeProperties: "Movie,Genre");
 			var homeContent = await _unitOfWork.HomeContent.GetAllAsync();
+			var movies = movieGenres.Select(x => x.Movie).Distinct().ToList();
+			var genres = movieGenres.Select(x => x.Genre).Distinct().ToList();
 
 			var homeVM = new HomeVM
 			{	
@@ -51,8 +41,9 @@ namespace CinemaApp.Web.Controllers
 				return NotFound();
 			}
 
-			var genre = await _unitOfWork.Genre.GetAsync(genreId);
-			var genreMovies = await _unitOfWork.HomeContent.GetGenreMoviesAsync(genreId);
+			var movieGenres = await _unitOfWork.MovieGenre.GetAllAsync(includeProperties: "Movie,Genre");
+			var genre = movieGenres.Where(x => x.GenreId == genreId).Select(x => x.Genre).FirstOrDefault();
+			var genreMovies = movieGenres.Where(x => x.GenreId == genreId).Select(x => x.Movie).ToList();
 
 			TempData["GenreName"] = genre.Name;
 
