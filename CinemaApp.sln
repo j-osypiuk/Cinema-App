@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Models", "CinemaA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.DataAccess", "CinemaApp.DataAccess\CinemaApp.DataAccess.csproj", "{09FC4CC7-AE9F-4E26-BF26-AF0583EBBA3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{3268674B-360C-4400-B4F7-A7A557FF80D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Utility", "CinemaApp.Utility\CinemaApp.Utility.csproj", "{3268674B-360C-4400-B4F7-A7A557FF80D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -22,7 +22,12 @@ namespace CinemaApp.Web.Controllers
 				return NotFound();
 			}
 
+<<<<<<< Updated upstream
 			var movieScreenings = _db.Screenings.Where(x => x.Movie.Id == movieId && x.StartTime >= DateTime.Now).Include(x => x.Movie).Include(x => x.Room).OrderBy(x => x.StartTime).ToList();
+=======
+			var movieScreenings = await _unitOfWork.Screening.FindAsync(x => x.Movie.Id == movieId && x.StartTime >= DateTime.Now, includeProperties: "Movie,Room");
+			movieScreenings = movieScreenings.OrderBy(x => x.StartTime).ToList();
+>>>>>>> Stashed changes
 
 			if (movieScreenings == null)
 			{

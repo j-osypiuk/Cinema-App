@@ -1,4 +1,4 @@
-﻿namespace Utility
+﻿namespace CinemaApp.Utility
 {
     public static class SD
     {

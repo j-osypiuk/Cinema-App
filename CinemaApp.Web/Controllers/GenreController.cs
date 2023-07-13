@@ -1,8 +1,8 @@
 ﻿using CinemaApp.DataAccess.Data;
 using CinemaApp.Models.DomainModels;
+using CinemaApp.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Utility;
 
 namespace CinemaApp.Web.Controllers
 {

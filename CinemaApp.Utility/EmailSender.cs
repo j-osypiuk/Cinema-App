@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
 
-namespace Utility
+namespace CinemaApp.Utility
 {
     public class EmailSender : IEmailSender
     {

@@ -3,7 +3,7 @@ using CinemaApp.DataAccess.Seed;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using Utility;
+using CinemaApp.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 

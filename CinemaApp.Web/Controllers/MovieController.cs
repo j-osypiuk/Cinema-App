@@ -3,8 +3,12 @@ using CinemaApp.Models.DomainModels;
 using CinemaApp.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+<<<<<<< Updated upstream
 using Microsoft.EntityFrameworkCore;
 using Utility;
+=======
+using CinemaApp.Utility;
+>>>>>>> Stashed changes
 
 namespace CinemaApp.Web.Controllers
 {

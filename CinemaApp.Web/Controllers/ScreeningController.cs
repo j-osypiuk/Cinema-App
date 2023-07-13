@@ -6,8 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+<<<<<<< Updated upstream
 using System.Runtime.CompilerServices;
 using Utility;
+=======
+using CinemaApp.Utility;
+>>>>>>> Stashed changes
 
 namespace CinemaApp.Web.Controllers
 {

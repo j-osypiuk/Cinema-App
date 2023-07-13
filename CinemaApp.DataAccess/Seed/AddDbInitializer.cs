@@ -15,6 +15,87 @@ namespace CinemaApp.DataAccess.Seed
 				
 				db.Database.EnsureCreated();
 
+				if (!db.Users.Any())
+				{
+					db.Users.Add(new ApplicationUser
+					{
+						UserName = "test@mail.com",
+						NormalizedUserName = "TEST@MAIL.COM",
+						Email = "test@mail.com",
+						NormalizedEmail = "TEST@MAIL.COM",
+						EmailConfirmed = false,
+						PasswordHash = "AQAAAAIAAYagAAAAED3yoUiTqg90DI5VEgi6SOuEssQWEa8HtUd9ava6I4E4Wp9yb0e/TzxRberNLhY7Vw==",
+						SecurityStamp = "OTFGDWUBEYEOXHCWGJU4PDSVJ4LXRD5U",
+						ConcurrencyStamp = "1421ce5b-96f1-472b-9ff3-aeb04b6e5a76",
+						PhoneNumber = "111222333",
+						PhoneNumberConfirmed = false,
+						TwoFactorEnabled = false,
+						LockoutEnd = null,
+						LockoutEnabled = true,
+						AccessFailedCount = 0,
+						FirstName = "Jan",
+						LastName = "Nowak",
+						StartJob = DateTime.Today
+					});
+					db.SaveChanges();
+				}
+
+				if(!db.Roles.Any())
+				{
+					db.Roles.Add(new Microsoft.AspNetCore.Identity.IdentityRole
+					{
+						Name = "Employee",
+						NormalizedName = "EMPLOYEE",
+						ConcurrencyStamp = null
+					});
+					db.SaveChanges();
+				}
+
+				if(!db.UserRoles.Any())
+				{
+					db.UserRoles.Add(new Microsoft.AspNetCore.Identity.IdentityUserRole<string>
+					{
+						UserId = db.ApplicationUsers.First().Id,
+						RoleId = db.Roles.First().Id
+					});
+					db.SaveChanges();
+				}
+
+				if (!db.HomeContents.Any())
+				{
+					db.HomeContents.AddRange(new List<HomeContent>
+					{
+						new HomeContent
+						{
+							CarouselImgUrl_1 = @"\images\carousel\7f2ee018-c1ef-4249-925a-cc6ba3b982e0.jpg",
+							CarouselImgUrl_2 = @"\images\carousel\6ccd8c10-9a18-479f-b933-71737d268418.jpg",
+							CarouselImgUrl_3 = @"\images\carousel\96ebbedc-40da-46dd-b705-705ee8e732de.jpg",
+							BlogTitle_1 = "We believe that",
+							BlogTitle_2 = "What's new?",
+							BlogTitle_3 = "See unseen",
+							BlogContent_1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum aliquet augue eu efficitur. " +
+							"Quisque molestie diam eros, ac sagittis diam sodales et. Donec orci sem, ornare vel nibh sed, imperdiet tempus orci. " +
+							"Donec bibendum ex justo, sed hendrerit enim hendrerit vel. Ut accumsan blandit sem quis convallis. Nulla sit amet lobortis" +
+							" ipsum. Curabitur condimentum, neque id convallis accumsan, lorem nunc malesuada neque, id mattis orci lectus at lacus." +
+							" Quisque pretium turpis congue ultrices viverra. Mauris sagittis ut arcu vel suscipit. Donec consectetur elit et faucibus " +
+							"finibus. Quisque quis hendrerit nunc, vitae pulvinar lectus. Vivamus tincidunt sodales nulla. Vestibulum quis mi sapien. " +
+							"Nunc erat orci, venenatis id dictum sit amet, ullamcorper nec ex. ",
+							BlogContent_2 = "Etiam pellentesque, augue ac malesuada consequat, purus arcu dapibus ligula, nec maximus nisi mauris sit amet " +
+							"libero. In et libero ultricies quam consequat tempus et id dolor. Donec sed sapien lorem. Donec tristique efficitur imperdiet." +
+							" Sed in erat vel sem tincidunt posuere. Vestibulum cursus turpis nec erat commodo varius. Aliquam felis justo, tincidunt ac" +
+							" sodales vitae, consequat non arcu. Praesent scelerisque gravida dolor, vitae molestie nunc pellentesque eget. Nunc posuere " +
+							"eu erat at varius. ",
+							BlogContent_3 = "Nunc eu tortor tortor. In tempor lobortis metus ac fringilla. Etiam fermentum dolor mollis, vehicula metus" +
+							" quis, semper nibh. Duis at pellentesque arcu. Praesent maximus neque eu eros pharetra pharetra. Ut at mi non tellus posuere" +
+							" molestie non eget massa. Suspendisse potenti. Donec felis tortor, hendrerit quis vestibulum a, scelerisque vel neque. " +
+							"Aliquam nec varius erat. Pellentesque tellus justo, viverra quis mi et, convallis ultricies nunc. Mauris nec ex sed elit" +
+							" posuere mattis. Maecenas et elit nunc. Donec dictum sollicitudin ipsum, eu mattis metus auctor in. Nam id diam in ante " +
+							"pharetra viverra. Fusce pretium bibendum augue, id scelerisque arcu consequat non. "
+						}
+					});
+					db.SaveChanges();
+				}
+
 				if (!db.Genres.Any())
 				{
 					db.Genres.AddRange(new List<Genre>
@@ -46,7 +127,8 @@ namespace CinemaApp.DataAccess.Seed
 							MainActor = "Mike Meyers, Eddie Murphy, Cameron Diaz",
 							ReleaseDate = new DateTime(2001,1,1),
 							Duration = 90,
-							TicketPrice = 14
+							TicketPrice = 14,
+							ImageUrl = @"\images\movie\25039c7b-b056-4c0d-bad7-12ee96428b03.jpg"
 						},
 						new Movie
 						{
@@ -58,7 +140,8 @@ namespace CinemaApp.DataAccess.Seed
 							MainActor = "Arnold Schwarzenegger, Linda Hamilton, Miachel Biehn",
 							ReleaseDate = new DateTime(1984,1,1),
 							Duration = 107,
-							TicketPrice = 12
+							TicketPrice = 12,
+							ImageUrl = @"\images\movie\f08d0ec7-7b23-4391-8b0f-0e304983c980.jpg"
 						},
 						new Movie
 						{
@@ -69,7 +152,8 @@ namespace CinemaApp.DataAccess.Seed
 							MainActor = "Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss",
 							ReleaseDate = new DateTime(1999,1,1),
 							Duration = 136,
-							TicketPrice = 15
+							TicketPrice = 15, 
+							ImageUrl = @"\images\movie\6d170cd5-49e7-4ee1-82b0-2b5d682ca776.jpg"
 						},
 						new Movie
 						{
@@ -80,7 +164,8 @@ namespace CinemaApp.DataAccess.Seed
 							MainActor = "Tom Hanks, Robin Wright, Gary Sinise",
 							ReleaseDate = new DateTime(1994,1,1),
 							Duration = 144,
-							TicketPrice = 13
+							TicketPrice = 13,
+							ImageUrl = @"\images\movie\376d85b9-57a7-48cd-8c7a-7b7419278ea0.jpg"
 						},
 						new Movie
 						{
@@ -91,7 +176,8 @@ namespace CinemaApp.DataAccess.Seed
 							MainActor = "John Travolta, Uma Thurman, Samuel L. Jackson",
 							ReleaseDate = new DateTime(1994,1,1),
 							Duration = 154,
-							TicketPrice = 15
+							TicketPrice = 15,
+							ImageUrl = @"\images\movie\63004796-770f-45a3-89d3-fad6472dcbba.jpg"
 						},
 						new Movie
 						{
@@ -102,7 +188,8 @@ namespace CinemaApp.DataAccess.Seed
 							MainActor = "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page",
 							ReleaseDate = new DateTime(2010,1,1),
 							Duration = 148,
-							TicketPrice = 14
+							TicketPrice = 14,
+							ImageUrl =  @"\images\movie\482579b2-f877-4a28-a88f-87f3be99c252.jpg"
 						},
 						new Movie
 						{
@@ -113,7 +200,8 @@ namespace CinemaApp.DataAccess.Seed
 							MainActor = "Miles Teller, J.K. Simmons, Melissa Benoist",
 							ReleaseDate = new DateTime(2014,1,1),
 							Duration = 106,
-							TicketPrice = 12
+							TicketPrice = 12,
+							ImageUrl = @"\images\movie\adb86119-783b-43be-a30f-c6c9674c506a.jpg"
 						},
 						new Movie
 						{
@@ -124,7 +212,8 @@ namespace CinemaApp.DataAccess.Seed
 							MainActor = "Martin Sheen, Marlon Brando, Robert Duvall",
 							ReleaseDate = new DateTime(1979,1,1),
 							Duration = 147,
-							TicketPrice = 13
+							TicketPrice = 13,
+							ImageUrl = @"\images\movie\d02de66a-a883-4116-818b-93c247e43e66.jpg"
 						},
 					});
 					db.SaveChanges();
