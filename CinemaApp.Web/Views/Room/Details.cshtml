@@ -1,22 +1,24 @@
-﻿@model RoomVM
+﻿@model Room
 
 <div class="d-flex justify-content-center">
 	<div class="card shadow border-0 mt-4 w-100">
 		<div class="card-header bg-black bg-gradient mt-0 py-1">
 			<div class="row">
 				<div class="col-12 text-center">
-					<h2 class="text-white py-2">Room @Model.Room.Id Screenings</h2>
+					<h2 class="text-white py-2">Room @Model.Number Screenings</h2>
 				</div>
 			</div>
 		</div>
 		<div class="card-body bg-dark p-4">
 			<div class="row pb-3">
 				<div class="col-12 text-end">
-					<a asp-controller="Screening" asp-action="Create" asp-route-roomId="@Model.Room.Id" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add New Screening</a>
+					<a asp-controller="Screening" asp-action="Create" asp-route-roomId="@Model.Id" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add New Screening</a>
 				</div>
 			</div>
-			@foreach (var date in Model.ScreeningDates)
-			{
+			@foreach (var date in Model.Screenings.Select(x => x.StartTime.Date).Distinct())
+			{	
+				@if (date.Date >= DateTime.Today)
+				{
 				<span class="d-inline-block p-3 bg-primary text-white rounded rounded-1 mb-2">@date.ToShortDateString()</span>
 
 				<div class="table-responsive">
@@ -31,9 +33,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach (var screening in Model.Room.Screenings)
+							@foreach (var screening in Model.Screenings.Distinct())
 							{	
-								if(screening.StartTime.Date == date.Date)
+								if(screening.StartTime.Date == date.Date && screening.StartTime >= DateTime.Now)
 								{
 									<tr>
 										<td class="align-middle py-1">
@@ -67,6 +69,7 @@
 					</table>
 				</div>
 				<hr />
+				}
 			}
 		</div>
 	</div>
