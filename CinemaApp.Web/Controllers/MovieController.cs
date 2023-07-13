@@ -3,12 +3,11 @@ using CinemaApp.Models.DomainModels;
 using CinemaApp.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Utility;
 
 namespace CinemaApp.Web.Controllers
 {
-    public class MovieController : Controller
+	public class MovieController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IWebHostEnvironment _webHostEnvironment;
@@ -19,36 +18,29 @@ namespace CinemaApp.Web.Controllers
 			_webHostEnvironment = webHostEnvironment;
 		}
 
-		[Authorize(Roles = SD.Role_Employee)]
+		//[Authorize(Roles = SD.Role_Employee)]
 		public async Task<IActionResult> Index()
 		{
-			var movies = await _unitOfWork.Movie.GetAllAsync(includeProperties: "MovieGenres");
-
-			foreach (var movie in movies)
-			{
-				foreach (var movieGenre in movie.MovieGenres)
-				{
-					movieGenre.Genre = await _unitOfWork.Genre.GetAsync(movieGenre.GenreId);
-				}
-			}
+			var movieGenres = await _unitOfWork.MovieGenre.GetAllAsync(includeProperties: "Movie,Genre");
+			var movies = movieGenres.Select(x => x.Movie).Distinct().ToList();
 
 			return View(movies);
 		}
 
-		[Authorize(Roles = SD.Role_Employee)]
+		//[Authorize(Roles = SD.Role_Employee)]
 		public async Task<IActionResult> Create()
 		{
 			var genres = await _unitOfWork.Genre.GetAllAsync();
 			MovieVM movieVM = new MovieVM
 			{
-				Genres = (ICollection<Genre>)genres,
+				Genres = genres,
 				Movie = new Movie()
 			};
 			movieVM.Movie.ReleaseDate = DateTime.Now;
 			return View(movieVM);
 		}
 
-		[Authorize(Roles = SD.Role_Employee)]
+		//[Authorize(Roles = SD.Role_Employee)]
 		[HttpPost]
 		public async Task<IActionResult> Create(MovieVM movieVM, IFormFile? formFile)
 		{
@@ -57,7 +49,7 @@ namespace CinemaApp.Web.Controllers
 				if (movieVM.SelectedGenreIds.Count <= 0)
 				{
 					ModelState.AddModelError("Movie.MovieGenres", "Movie must belongs to at least one genre.");
-					movieVM.Genres = (ICollection<Genre>) await _unitOfWork.Genre.GetAllAsync();
+					movieVM.Genres = await _unitOfWork.Genre.GetAllAsync();
 					return View(movieVM);
 				}
 
@@ -86,16 +78,13 @@ namespace CinemaApp.Web.Controllers
 
 		public async Task<IActionResult> Details(int? id)
 		{
-			var movie = await _unitOfWork.Movie.GetByAsync(x => x.Id == id, includeProperties: "MovieGenres");
+			var movieGenres = await _unitOfWork.MovieGenre.GetAllAsync(includeProperties: "Movie,Genre");
+			var movie = movieGenres.Where(x => x.MovieId == id).Select(x => x.Movie).FirstOrDefault();
 
-            foreach (var movieGenre in movie.MovieGenres)
-            {
-                movieGenre.Genre = await _unitOfWork.Genre.GetAsync(movieGenre.GenreId);
-            }
-            return View(movie);
+			return View(movie);
 		}
 
-		[Authorize(Roles = SD.Role_Employee)]
+		//[Authorize(Roles = SD.Role_Employee)]
 		public async Task<IActionResult> Edit(int? id)
 		{
 			if (id == null || id == 0)
@@ -103,14 +92,10 @@ namespace CinemaApp.Web.Controllers
 				return NotFound();
 			}
 
-            var movie = await _unitOfWork.Movie.GetByAsync(x => x.Id == id, includeProperties: "MovieGenres");
+			var movieGenres = await _unitOfWork.MovieGenre.GetAllAsync(includeProperties: "Movie,Genre");
+			var movie = movieGenres.Where(x => x.MovieId == id).Select(x => x.Movie).FirstOrDefault();
 
-            foreach (var movieGenre in movie.MovieGenres)
-            {
-                movieGenre.Genre = await _unitOfWork.Genre.GetAsync(movieGenre.GenreId);
-            }
-
-            if (movie == null)
+			if (movie == null)
 			{
 				return NotFound();
 			}
@@ -119,13 +104,13 @@ namespace CinemaApp.Web.Controllers
 			{
 				Movie = movie,
 				SelectedGenreIds = movie.MovieGenres.Select(x => x.GenreId).ToList(),
-				Genres = (ICollection<Genre>) await _unitOfWork.Genre.GetAllAsync()
+				Genres = await _unitOfWork.Genre.GetAllAsync()
 			};
 
 			return View(movieVM);
 		}
 
-		[Authorize(Roles = SD.Role_Employee)]
+		//[Authorize(Roles = SD.Role_Employee)]
 		[HttpPost]
 		public async Task<IActionResult> Edit(MovieVM movieVM, IFormFile? formFile)
 		{
@@ -134,7 +119,7 @@ namespace CinemaApp.Web.Controllers
 				if (movieVM.SelectedGenreIds.Count <= 0)
 				{
 					ModelState.AddModelError("Movie.MovieGenres", "Movie must belongs to at least one genre.");
-					movieVM.Genres = (ICollection<Genre>) await _unitOfWork.Genre.GetAllAsync();
+					movieVM.Genres = await _unitOfWork.Genre.GetAllAsync();
 					return View(movieVM);
 				}
 
@@ -186,23 +171,29 @@ namespace CinemaApp.Web.Controllers
 			return View();
 		}
 
-		[Authorize(Roles = SD.Role_Employee)]
+		//[Authorize(Roles = SD.Role_Employee)]
 		public async Task<IActionResult> Delete(int? id)
 		{
 			if (id == null || id == 0)
+			{
 				return NotFound();
+			}
 
 			var movie = await _unitOfWork.Movie.GetAsync(id);
 
 			if (movie == null)
+			{
 				return NotFound();
+			}
 
 			if (!string.IsNullOrEmpty(movie.ImageUrl))
 			{
 				var fileToDeletePath = Path.Combine(_webHostEnvironment.WebRootPath, movie.ImageUrl.TrimStart('\\'));
 
 				if (System.IO.File.Exists(fileToDeletePath))
+				{
 					System.IO.File.Delete(fileToDeletePath);
+				}
 			}
 
 			_unitOfWork.Movie.Remove(movie);
