@@ -9,6 +9,6 @@ namespace CinemaApp.Models.ViewModels
 		public ICollection<int> SelectedGenreIds { get; set; } = new List<int>();
 
 		[ValidateNever]
-		public ICollection<Genre> Genres { get; set; }
+		public IEnumerable<Genre> Genres { get; set; }
 	}
 }

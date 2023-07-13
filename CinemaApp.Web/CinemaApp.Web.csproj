@@ -25,8 +25,4 @@
     <ProjectReference Include="..\Utility\Utility.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\carousel\" />
-  </ItemGroup>
-
 </Project>

@@ -1,4 +1,5 @@
 ﻿using CinemaApp.DataAccess.Data;
+using CinemaApp.DataAccess.Repository.IRepository;
 using CinemaApp.Models.DomainModels;
 using CinemaApp.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -6,30 +7,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using System.Runtime.CompilerServices;
 using Utility;
 
 namespace CinemaApp.Web.Controllers
 {
-    [Authorize(Roles = SD.Role_Employee)]
+	//[Authorize(Roles = SD.Role_Employee)]
     public class ScreeningController : Controller
 	{
-		private readonly ApplicationDbContext _db;
+		private readonly IUnitOfWork _unitOfWork;
 		private readonly IEnumerable<SelectListItem> _selectedMovieList;
 
-		public ScreeningController(ApplicationDbContext db)
+		public ScreeningController(IUnitOfWork unitOfWork)
 		{
-			_db = db;
-			_selectedMovieList = _db.Movies.Select(x => new SelectListItem
+			_unitOfWork = unitOfWork;
+			_selectedMovieList = _unitOfWork.Movie.GetAllAsync().Result.Select(x => new SelectListItem
 			{
 				Text = x.Title,
 				Value = x.Id.ToString()
 			});
 		}
 
-		public IActionResult Index()
-		{	
-			var screenings = _db.Screenings.Include(x => x.Movie).Include(x => x.Room).ToList();
+		public async Task<IActionResult> Index()
+		{
+			var screenings = await _unitOfWork.Screening.GetAllAsync(includeProperties: "Movie,Room");
 			return View(screenings);
 		}
 
@@ -54,15 +54,14 @@ namespace CinemaApp.Web.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Create(ScreeningVM screeningVM)
+		public async Task<IActionResult> Create(ScreeningVM screeningVM)
 		{
 			if(ModelState.IsValid)
 			{
-				var movie = _db.Movies.Find(screeningVM.SelectedMovieId);
-				var screenings = _db.Screenings
-									.Where(x => x.StartTime.Date == screeningVM.Screening.StartTime.Date && x.RoomId == screeningVM.Screening.RoomId)
-									.Include(x => x.Movie).ToList();
+				var movie = await _unitOfWork.Movie.GetAsync(screeningVM.SelectedMovieId);
 
+				var screenings = await _unitOfWork.Screening.FindAsync(x => x.StartTime.Date == screeningVM.Screening.StartTime.Date
+									&& x.RoomId == screeningVM.Screening.RoomId, includeProperties: "Movie");
 
 				if (movie == null)
 				{
@@ -118,21 +117,21 @@ namespace CinemaApp.Web.Controllers
 					RoomId = screeningVM.Screening.RoomId
 				};
 
-				_db.Screenings.Add(newScreening);
-				_db.SaveChanges();
+				await _unitOfWork.Screening.AddAsync(newScreening);
+				await _unitOfWork.SaveAsync();
 				return RedirectToAction("Details", "Room", new { id = screeningVM.Screening.RoomId });
 			}
 			return View();
 		}
 
-		public IActionResult Details(int? id)
+		public async Task<IActionResult> Details(int? id)
 		{
 			if (id == null || id == 0)
 			{
 				return NotFound();
 			}
 
-			var screening = _db.Screenings.Where(x => x.Id == id).Include(x => x.Movie).Include(x => x.Room).Include(x => x.Tickets).FirstOrDefault();
+			var screening = await _unitOfWork.Screening.GetByAsync(x => x.Id == id, includeProperties: "Movie,Room,Tickets");
 			
 			if (screening == null)
 			{
@@ -142,22 +141,27 @@ namespace CinemaApp.Web.Controllers
 			return View(screening);
 		}
 
-		public IActionResult Delete(int? id)
+		public async Task<IActionResult> Delete(int? id)
 		{	
 			if (id == null || id == 0)
 			{
 				return NotFound();
 			}
 
-			var screening = _db.Screenings.Where(x => x.Id == id).Include(x => x.Tickets).FirstOrDefault();
+			var screening = await _unitOfWork.Screening.GetByAsync(x => x.Id == id, includeProperties: "Tickets");
 
 			if (screening == null)
 			{
 				return NotFound();
 			}
 
-			_db.Screenings.Remove(screening);
-			_db.SaveChanges();
+			if (screening.Tickets.Count > 0)
+			{
+				return RedirectToAction("Details", "Screening", new { id });
+			}
+
+			_unitOfWork.Screening.Remove(screening);
+			await _unitOfWork.SaveAsync();
 
 			return RedirectToAction("Details", "Room", new {id = screening.RoomId});
 		}
