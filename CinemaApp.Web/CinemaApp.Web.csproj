@@ -25,8 +25,4 @@
     <ProjectReference Include="..\CinemaApp.Utility\CinemaApp.Utility.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\carousel\" />
-  </ItemGroup>
-
 </Project>

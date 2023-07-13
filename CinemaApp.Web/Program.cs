@@ -1,4 +1,6 @@
 using CinemaApp.DataAccess.Data;
+using CinemaApp.DataAccess.Repository;
+using CinemaApp.DataAccess.Repository.IRepository;
 using CinemaApp.DataAccess.Seed;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -16,6 +18,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.ConfigureApplicationCookie(options =>
 {
 	options.LoginPath = $"/Identity/Account/Login";

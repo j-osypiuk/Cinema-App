@@ -1,4 +1,4 @@
-﻿using CinemaApp.DataAccess.Data;
+﻿using CinemaApp.DataAccess.Repository.IRepository;
 using CinemaApp.Models.DomainModels;
 using CinemaApp.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -6,19 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaApp.Web.Controllers
 {
-	[Authorize(Roles = SD.Role_Employee)]
+    [Authorize(Roles = SD.Role_Employee)]
 	public class GenreController : Controller
 	{
-		private readonly ApplicationDbContext _db;
+		private readonly IUnitOfWork _unitOfWork;
 
-        public GenreController(ApplicationDbContext db)
+        public GenreController(IUnitOfWork unitOfWork)
         {
-			_db = db;
+            _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
 		{	
-			var genres = _db.Genres.ToList();
+			var genres = await _unitOfWork.Genre.GetAllAsync();
 			return View(genres);
 		}
 
@@ -28,56 +28,63 @@ namespace CinemaApp.Web.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Create(Genre genre)
+		public async Task<IActionResult> Create(Genre genre)
 		{
 			if(ModelState.IsValid)
 			{
-				_db.Genres.Add(genre);
-				_db.SaveChanges();
+				await _unitOfWork.Genre.AddAsync(genre);
+				await _unitOfWork.SaveAsync();
 
 				return RedirectToAction("Index");
 			}
 			return View();
 		}
 
-		public IActionResult Edit(int? id)
+		public async Task<IActionResult> Edit(int? id)
 		{	
-			if(id == null || id == 0)
+			if (id == null || id == 0)
+			{
 				return NotFound();
+			}
 
-			var genre = _db.Genres.Find(id);
+			var genre = await _unitOfWork.Genre.GetAsync(id);
 
-			if(genre == null) 
+			if (genre == null)
+			{
 				return NotFound();
-
+			}
 			return View(genre);
 		}
 
 		[HttpPost]
-		public IActionResult Edit(Genre genre)
+		public async Task<IActionResult> Edit(Genre genre)
 		{
 			if(ModelState.IsValid)
 			{
-				_db.Genres.Update(genre);
-				_db.SaveChanges();
+				_unitOfWork.Genre.Update(genre);
+				await _unitOfWork.SaveAsync();
 
 				return RedirectToAction("Index");
 			}
 			return View(genre);
 		}
 
-		public IActionResult Delete(int? id)
+		public async Task<IActionResult> Delete(int? id)
 		{
 			if (id == null || id == 0)
+			{
 				return NotFound();
+			}
 
-			var genre = _db.Genres.Find(id);
+			var genre = _unitOfWork.Genre.GetAsync(id).Result;
 
-			if(genre == null)
+			if (genre == null)
+			{
 				return NotFound();
+			}
 
-			_db.Genres.Remove(genre);
-			_db.SaveChanges();
+			_unitOfWork.Genre.Remove(genre);
+			await _unitOfWork.SaveAsync();
 
 			return RedirectToAction("Index");
 		}

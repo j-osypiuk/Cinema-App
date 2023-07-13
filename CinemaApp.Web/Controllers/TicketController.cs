@@ -1,4 +1,5 @@
 ﻿using CinemaApp.DataAccess.Data;
+using CinemaApp.DataAccess.Repository.IRepository;
 using CinemaApp.Models.DomainModels;
 using CinemaApp.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -8,26 +9,31 @@ namespace CinemaApp.Web.Controllers
 {
 	public class TicketController : Controller
 	{
-		private readonly ApplicationDbContext _db;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public TicketController(ApplicationDbContext db)
+		public TicketController(IUnitOfWork unitOfWork)
 		{
-			_db = db;
+			_unitOfWork = unitOfWork;
 		}
 
-		public IActionResult Index(int? movieId)
+		public async Task<IActionResult> Index(int? movieId)
 		{	
 			if (movieId == null || movieId == 0)
 			{
 				return NotFound();
 			}
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 			var movieScreenings = _db.Screenings.Where(x => x.Movie.Id == movieId && x.StartTime >= DateTime.Now).Include(x => x.Movie).Include(x => x.Room).OrderBy(x => x.StartTime).ToList();
 =======
 			var movieScreenings = await _unitOfWork.Screening.FindAsync(x => x.Movie.Id == movieId && x.StartTime >= DateTime.Now, includeProperties: "Movie,Room");
 			movieScreenings = movieScreenings.OrderBy(x => x.StartTime).ToList();
 >>>>>>> Stashed changes
+=======
+			var movieScreenings = await _unitOfWork.Screening.FindAsync(x => x.Movie.Id == movieId && x.StartTime >= DateTime.Now, includeProperties: "Movie,Room");
+			movieScreenings.OrderBy(x => x.StartTime).ToList();
+>>>>>>> dee6abe1db6fc32240bec255b3b61b69775eb88e
 
 			if (movieScreenings == null)
 			{
@@ -37,14 +43,14 @@ namespace CinemaApp.Web.Controllers
 			return View(movieScreenings);
 		}
 
-		public IActionResult Create(int? screeningId)
+		public async Task<IActionResult> Create(int? screeningId)
 		{
 			if (screeningId == null || screeningId == 0)
 			{
 				return NotFound();
 			}
 
-			var screening = _db.Screenings.Where(x => x.Id == screeningId).Include(x => x.Movie).Include(x => x.Tickets).FirstOrDefault();
+			var screening = await _unitOfWork.Screening.GetByAsync(x => x.Id == screeningId, includeProperties: "Movie,Tickets");
 
 			var ticketVM = new TicketVM
 			{
@@ -63,22 +69,25 @@ namespace CinemaApp.Web.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Create(TicketVM ticketVM)
+		public async Task<IActionResult> Create(TicketVM ticketVM)
 		{
+			var tickets = await _unitOfWork.Ticket.GetAllAsync();
+
 			if(ModelState.IsValid)
 			{
-				if (_db.Tickets.Any(x => x.Row == ticketVM.SelectedRowNumber && x.Number == ticketVM.SelectedSeatNumber && x.ScreeningId == ticketVM.Ticket.ScreeningId))
+				if (tickets.Any(x => x.Row == ticketVM.SelectedRowNumber && x.Number == ticketVM.SelectedSeatNumber && x.ScreeningId == ticketVM.Ticket.ScreeningId))
 				{
 					ModelState.AddModelError(nameof(ticketVM.SelectedSeatNumber), "This seat is already reserved.");
-                    ticketVM.TicketsBought = _db.Tickets.Where(x => x.ScreeningId == ticketVM.Ticket.ScreeningId).ToList();
+					ticketVM.TicketsBought = (ICollection<Ticket>?) await _unitOfWork.Ticket.FindAsync(x => x.ScreeningId == ticketVM.Ticket.ScreeningId);
 					return View(ticketVM);
 				}
 
 				ticketVM.Ticket.Row = ticketVM.SelectedRowNumber;
 				ticketVM.Ticket.Number = ticketVM.SelectedSeatNumber;
 
-				_db.Tickets.Add(ticketVM.Ticket);
-				_db.SaveChanges();
+				await _unitOfWork.Ticket.AddAsync(ticketVM.Ticket);
+				await _unitOfWork.SaveAsync();
+
 				return RedirectToAction("Index", "Home");
 			}
 
