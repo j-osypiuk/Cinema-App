@@ -1,17 +1,9 @@
 ﻿using CinemaApp.DataAccess.Repository.IRepository;
 using CinemaApp.Models.DomainModels;
 using CinemaApp.Models.ViewModels;
+using CinemaApp.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-using Microsoft.EntityFrameworkCore;
-=======
->>>>>>> dee6abe1db6fc32240bec255b3b61b69775eb88e
-using Utility;
-=======
-using CinemaApp.Utility;
->>>>>>> Stashed changes
 
 namespace CinemaApp.Web.Controllers
 {
@@ -26,7 +18,7 @@ namespace CinemaApp.Web.Controllers
 			_webHostEnvironment = webHostEnvironment;
 		}
 
-		//[Authorize(Roles = SD.Role_Employee)]
+		[Authorize(Roles = SD.Role_Employee)]
 		public async Task<IActionResult> Index()
 		{
 			var movieGenres = await _unitOfWork.MovieGenre.GetAllAsync(includeProperties: "Movie,Genre");
@@ -35,7 +27,7 @@ namespace CinemaApp.Web.Controllers
 			return View(movies);
 		}
 
-		//[Authorize(Roles = SD.Role_Employee)]
+		[Authorize(Roles = SD.Role_Employee)]
 		public async Task<IActionResult> Create()
 		{
 			var genres = await _unitOfWork.Genre.GetAllAsync();
@@ -48,7 +40,7 @@ namespace CinemaApp.Web.Controllers
 			return View(movieVM);
 		}
 
-		//[Authorize(Roles = SD.Role_Employee)]
+		[Authorize(Roles = SD.Role_Employee)]
 		[HttpPost]
 		public async Task<IActionResult> Create(MovieVM movieVM, IFormFile? formFile)
 		{
@@ -95,7 +87,7 @@ namespace CinemaApp.Web.Controllers
 			return View(movie);
 		}
 
-		//[Authorize(Roles = SD.Role_Employee)]
+		[Authorize(Roles = SD.Role_Employee)]
 		public async Task<IActionResult> Edit(int? id)
 		{
 			if (id == null || id == 0)
@@ -121,7 +113,7 @@ namespace CinemaApp.Web.Controllers
 			return View(movieVM);
 		}
 
-		//[Authorize(Roles = SD.Role_Employee)]
+		[Authorize(Roles = SD.Role_Employee)]
 		[HttpPost]
 		public async Task<IActionResult> Edit(MovieVM movieVM, IFormFile? formFile)
 		{
@@ -183,7 +175,7 @@ namespace CinemaApp.Web.Controllers
 			return View();
 		}
 
-		//[Authorize(Roles = SD.Role_Employee)]
+		[Authorize(Roles = SD.Role_Employee)]
 		public async Task<IActionResult> Delete(int? id)
 		{
 			if (id == null || id == 0)

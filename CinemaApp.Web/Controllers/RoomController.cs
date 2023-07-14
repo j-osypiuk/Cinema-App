@@ -1,15 +1,12 @@
-﻿using CinemaApp.DataAccess.Data;
-using CinemaApp.DataAccess.Repository.IRepository;
-using CinemaApp.Models.ViewModels;
+﻿using CinemaApp.DataAccess.Repository.IRepository;
+using CinemaApp.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Data;
-using CinemaApp.Utility;
 
 namespace CinemaApp.Web.Controllers
 {
-   // [Authorize(Roles = SD.Role_Employee)]
+	[Authorize(Roles = SD.Role_Employee)]
     public class RoomController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;

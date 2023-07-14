@@ -1,25 +1,15 @@
-﻿using CinemaApp.DataAccess.Data;
-using CinemaApp.DataAccess.Repository.IRepository;
+﻿using CinemaApp.DataAccess.Repository.IRepository;
 using CinemaApp.Models.DomainModels;
 using CinemaApp.Models.ViewModels;
+using CinemaApp.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using System.Data;
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-using System.Runtime.CompilerServices;
-=======
->>>>>>> dee6abe1db6fc32240bec255b3b61b69775eb88e
-using Utility;
-=======
-using CinemaApp.Utility;
->>>>>>> Stashed changes
 
 namespace CinemaApp.Web.Controllers
 {
-	//[Authorize(Roles = SD.Role_Employee)]
+	[Authorize(Roles = SD.Role_Employee)]
     public class ScreeningController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;

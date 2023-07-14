@@ -1,7 +1,10 @@
 ﻿using CinemaApp.DataAccess.Repository.IRepository;
 using CinemaApp.Models.DomainModels;
 using CinemaApp.Models.ViewModels;
+using CinemaApp.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Diagnostics;
 
 namespace CinemaApp.Web.Controllers
@@ -50,6 +53,7 @@ namespace CinemaApp.Web.Controllers
 			return View(genreMovies);
 		}
 
+		[Authorize(Roles = SD.Role_Employee)]
 		public async Task<IActionResult> Edit()
 		{
 			var homeContent = await _unitOfWork.HomeContent.GetAllAsync();
@@ -62,6 +66,7 @@ namespace CinemaApp.Web.Controllers
 			return View(homeContent.FirstOrDefault());
 		}
 
+		[Authorize(Roles = SD.Role_Employee)]
 		[HttpPost] 
 		public async Task<IActionResult> Edit(HomeContent? homeContent, IFormFile? CarouselImg_1, IFormFile? CarouselImg_2, IFormFile? CarouselImg_3)
 		{

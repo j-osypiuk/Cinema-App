@@ -1,9 +1,7 @@
-﻿using CinemaApp.DataAccess.Data;
-using CinemaApp.DataAccess.Repository.IRepository;
+﻿using CinemaApp.DataAccess.Repository.IRepository;
 using CinemaApp.Models.DomainModels;
 using CinemaApp.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Web.Controllers
 {
@@ -23,17 +21,8 @@ namespace CinemaApp.Web.Controllers
 				return NotFound();
 			}
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-			var movieScreenings = _db.Screenings.Where(x => x.Movie.Id == movieId && x.StartTime >= DateTime.Now).Include(x => x.Movie).Include(x => x.Room).OrderBy(x => x.StartTime).ToList();
-=======
-			var movieScreenings = await _unitOfWork.Screening.FindAsync(x => x.Movie.Id == movieId && x.StartTime >= DateTime.Now, includeProperties: "Movie,Room");
-			movieScreenings = movieScreenings.OrderBy(x => x.StartTime).ToList();
->>>>>>> Stashed changes
-=======
 			var movieScreenings = await _unitOfWork.Screening.FindAsync(x => x.Movie.Id == movieId && x.StartTime >= DateTime.Now, includeProperties: "Movie,Room");
 			movieScreenings.OrderBy(x => x.StartTime).ToList();
->>>>>>> dee6abe1db6fc32240bec255b3b61b69775eb88e
 
 			if (movieScreenings == null)
 			{
