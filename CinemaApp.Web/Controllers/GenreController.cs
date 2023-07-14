@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaApp.Web.Controllers
 {
-    [Authorize(Roles = SD.Role_Employee)]
+	[Authorize(Roles = SD.Role_Employee)]
 	public class GenreController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
@@ -76,7 +76,7 @@ namespace CinemaApp.Web.Controllers
 				return NotFound();
 			}
 
-			var genre = _unitOfWork.Genre.GetAsync(id).Result;
+			var genre = await _unitOfWork.Genre.GetAsync(id);
 
 			if (genre == null)
 			{
@@ -86,7 +86,7 @@ namespace CinemaApp.Web.Controllers
 			_unitOfWork.Genre.Remove(genre);
 			await _unitOfWork.SaveAsync();
 
-			return RedirectToAction("Index");
+			return View();
 		}
 	}
 }
