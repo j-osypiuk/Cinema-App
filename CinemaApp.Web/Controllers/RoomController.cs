@@ -18,11 +18,22 @@ namespace CinemaApp.Web.Controllers
 		public async Task<IActionResult> Index()
 		{	
 			var rooms = await _unitOfWork.Room.GetAllAsync();
+
+			if (rooms == null)
+			{
+				return NotFound();
+			}
+
 			return View(rooms);
 		}
 
 		public async Task<IActionResult> Details(int? id)
-		{
+		{	
+			if (id == null || id == 0)
+			{
+				return NotFound();
+			}
+
 			var room = await _unitOfWork.Room.GetByAsync(x => x.Id == id, includeProperties: "Screenings");
 			
 			if (room == null)
