@@ -28,29 +28,13 @@ namespace CinemaApp.Web.Controllers
 			var genres = movieGenres.Select(x => x.Genre).Distinct().ToList();
 
 			var homeVM = new HomeVM
-			{	
+			{
 				HomeContent = homeContent.FirstOrDefault(),
 				Genres = genres.OrderBy(x => x.Name),
 				Movies = movies,
 			};
 
 			return View(homeVM);
-		}
-
-		public async Task<IActionResult> GenreMovies(int? genreId)
-		{
-			if (genreId == null || genreId == 0)
-			{
-				return NotFound();
-			}
-
-			var movieGenres = await _unitOfWork.MovieGenre.GetAllAsync(includeProperties: "Movie,Genre");
-			var genre = movieGenres.Where(x => x.GenreId == genreId).Select(x => x.Genre).FirstOrDefault();
-			var genreMovies = movieGenres.Where(x => x.GenreId == genreId).Select(x => x.Movie).ToList();
-
-			TempData["GenreName"] = genre.Name;
-
-			return View(genreMovies);
 		}
 
 		[Authorize(Roles = SD.Role_Employee)]
