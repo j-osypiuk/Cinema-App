@@ -27,6 +27,11 @@ namespace CinemaApp.Web.Controllers
 			var movies = movieGenres.Select(x => x.Movie).Distinct().ToList();
 			var genres = movieGenres.Select(x => x.Genre).Distinct().ToList();
 
+			if (homeContent == null)
+			{
+				 return NotFound();
+			}
+
 			var homeVM = new HomeVM
 			{
 				HomeContent = homeContent.FirstOrDefault(),
@@ -108,7 +113,7 @@ namespace CinemaApp.Web.Controllers
 				_unitOfWork.HomeContent.Update(homeContent);
 				await _unitOfWork.SaveAsync();
 
-				return RedirectToAction("Index", "Home");
+				return RedirectToAction("Index");
 			}
 			return View(homeContent);
 		}
