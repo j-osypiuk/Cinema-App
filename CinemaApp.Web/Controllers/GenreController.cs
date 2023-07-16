@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaApp.Web.Controllers
 {
-    [Authorize(Roles = SD.Role_Employee)]
+
 	public class GenreController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
@@ -16,17 +16,36 @@ namespace CinemaApp.Web.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index()
+		[Authorize(Roles = SD.Role_Employee)]
+		public async Task<IActionResult> Index()
 		{	
 			var genres = await _unitOfWork.Genre.GetAllAsync();
 			return View(genres);
 		}
 
+		[Authorize(Roles = SD.Role_Employee)]
 		public IActionResult Create() 
 		{
 			return View();
 		}
 
+		public async Task<IActionResult> GenreMovies(int? genreId)
+		{
+			if (genreId == null || genreId == 0)
+			{
+				return NotFound();
+			}
+
+			var movieGenres = await _unitOfWork.MovieGenre.GetAllAsync(includeProperties: "Movie,Genre");
+			var genre = movieGenres.Where(x => x.GenreId == genreId).Select(x => x.Genre).FirstOrDefault();
+			var genreMovies = movieGenres.Where(x => x.GenreId == genreId).Select(x => x.Movie).ToList();
+
+			TempData["GenreName"] = genre.Name;
+
+			return View(genreMovies);
+		}
+
+		[Authorize(Roles = SD.Role_Employee)]
 		[HttpPost]
 		public async Task<IActionResult> Create(Genre genre)
 		{
@@ -40,6 +59,7 @@ namespace CinemaApp.Web.Controllers
 			return View();
 		}
 
+		[Authorize(Roles = SD.Role_Employee)]
 		public async Task<IActionResult> Edit(int? id)
 		{	
 			if (id == null || id == 0)
@@ -56,6 +76,7 @@ namespace CinemaApp.Web.Controllers
 			return View(genre);
 		}
 
+		[Authorize(Roles = SD.Role_Employee)]
 		[HttpPost]
 		public async Task<IActionResult> Edit(Genre genre)
 		{
@@ -69,6 +90,7 @@ namespace CinemaApp.Web.Controllers
 			return View(genre);
 		}
 
+		[Authorize(Roles = SD.Role_Employee)]
 		public async Task<IActionResult> Delete(int? id)
 		{
 			if (id == null || id == 0)
@@ -76,7 +98,7 @@ namespace CinemaApp.Web.Controllers
 				return NotFound();
 			}
 
-			var genre = _unitOfWork.Genre.GetAsync(id).Result;
+			var genre = await _unitOfWork.Genre.GetAsync(id);
 
 			if (genre == null)
 			{
@@ -86,7 +108,7 @@ namespace CinemaApp.Web.Controllers
 			_unitOfWork.Genre.Remove(genre);
 			await _unitOfWork.SaveAsync();
 
-			return RedirectToAction("Index");
+			return View();
 		}
 	}
 }

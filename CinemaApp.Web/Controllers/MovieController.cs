@@ -76,6 +76,7 @@ namespace CinemaApp.Web.Controllers
 
 				return RedirectToAction("Index");
 			}
+			movieVM.Genres = await _unitOfWork.Genre.GetAllAsync();
 			return View(movieVM);
 		}
 
@@ -172,7 +173,8 @@ namespace CinemaApp.Web.Controllers
 
 				return RedirectToAction("Index");
 			}
-			return View();
+			movieVM.Genres = await _unitOfWork.Genre.GetAllAsync();
+			return View(movieVM);
 		}
 
 		[Authorize(Roles = SD.Role_Employee)]
@@ -203,7 +205,7 @@ namespace CinemaApp.Web.Controllers
 			_unitOfWork.Movie.Remove(movie);
 			await _unitOfWork.SaveAsync();
 
-			return RedirectToAction("Index");
+			return View();
 		}
 	}
 }
