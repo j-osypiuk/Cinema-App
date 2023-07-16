@@ -22,13 +22,13 @@ namespace CinemaApp.Web.Controllers
 			}
 
 			var movieScreenings = await _unitOfWork.Screening.FindAsync(x => x.Movie.Id == movieId && x.StartTime >= DateTime.Now, includeProperties: "Movie,Room");
-			movieScreenings.OrderBy(x => x.StartTime).ToList();
 
 			if (movieScreenings == null)
 			{
 				return NotFound();
 			}
 
+			movieScreenings.OrderBy(x => x.StartTime).ToList();
 			return View(movieScreenings);
 		}
 
