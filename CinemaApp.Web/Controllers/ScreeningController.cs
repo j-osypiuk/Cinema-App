@@ -13,29 +13,36 @@ namespace CinemaApp.Web.Controllers
     public class ScreeningController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
-		private readonly IEnumerable<SelectListItem> _selectedMovieList;
 
 		public ScreeningController(IUnitOfWork unitOfWork)
 		{
 			_unitOfWork = unitOfWork;
-			_selectedMovieList = _unitOfWork.Movie.GetAllAsync().Result.Select(x => new SelectListItem
-			{
-				Text = x.Title,
-				Value = x.Id.ToString()
-			});
 		}
 
 		public async Task<IActionResult> Index()
 		{
 			var screenings = await _unitOfWork.Screening.GetAllAsync(includeProperties: "Movie,Room");
+
+			if (screenings == null)
+			{
+				return NotFound();
+			}
+
 			return View(screenings);
 		}
 
 
-		public IActionResult Create(int? roomId) 
+		public async Task<IActionResult> Create(int? roomId) 
 		{	
 			if(roomId == null || roomId == 0)
 			{
+				return NotFound();
+			}
+
+			var movies = await _unitOfWork.Movie.GetAllAsync();
+
+			if (movies == null) 
+			{ 
 				return NotFound();
 			}
 
@@ -46,7 +53,11 @@ namespace CinemaApp.Web.Controllers
 					RoomId = (int)roomId,
 					StartTime = DateTime.Today
 				},
-				MovieSelectList = _selectedMovieList,
+				MovieSelectList = movies.Select(x => new SelectListItem
+				{
+					Text = x.Title,
+					Value = x.Id.ToString()
+				})
 			};
 			return View(screeningVM);
 		}
@@ -54,48 +65,51 @@ namespace CinemaApp.Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Create(ScreeningVM screeningVM)
 		{
-			if(ModelState.IsValid)
+			if (ModelState.IsValid)
 			{
 				var movie = await _unitOfWork.Movie.GetAsync(screeningVM.SelectedMovieId);
+				screeningVM.MovieSelectList = _unitOfWork.Movie.GetAllAsync().Result.Select(x => new SelectListItem
+				{
+					Text = x.Title,
+					Value = x.Id.ToString()
+				});
+
+				if (movie == null)
+				{
+					ModelState.AddModelError(nameof(screeningVM.SelectedMovieId), "Selected Movie does not exitst.");
+					return View(screeningVM);
+				}
 
 				var screenings = await _unitOfWork.Screening.FindAsync(x => x.StartTime.Date == screeningVM.Screening.StartTime.Date
 									&& x.RoomId == screeningVM.Screening.RoomId, includeProperties: "Movie");
 
-				if (movie == null)
-				{
-					screeningVM.MovieSelectList = _selectedMovieList;
-					if (movie == null)
-					{
-						ModelState.AddModelError(nameof(screeningVM.SelectedMovieId), "Selected Movie does not exitst.");
-					}
-					return View(screeningVM);
-				}
-
 				// Checks if there is no time conflict with other movie screenings
 				bool conflict = false;
-				foreach (var screening in screenings)
+				if (screenings != null)
 				{
-					if (screeningVM.Screening.StartTime >= screening.StartTime
-						&& screeningVM.Screening.StartTime <= screening.StartTime.AddMinutes(screening.Movie.Duration))
+					foreach (var screening in screenings)
 					{
-						conflict = true;
-					}
-					if (screeningVM.Screening.StartTime.AddMinutes(movie.Duration) >= screening.StartTime
-						&& screeningVM.Screening.StartTime.AddMinutes(movie.Duration) <= screening.StartTime.AddMinutes(screening.Movie.Duration))
-					{
-						conflict = true;
-					}
-					if (screening.StartTime >= screeningVM.Screening.StartTime
-						&& screening.StartTime.AddMinutes(screening.Movie.Duration) <= screeningVM.Screening.StartTime.AddMinutes(movie.Duration))
-					{
-						conflict = true;
+						if (screeningVM.Screening.StartTime >= screening.StartTime
+							&& screeningVM.Screening.StartTime <= screening.StartTime.AddMinutes(screening.Movie.Duration))
+						{
+							conflict = true;
+						}
+						if (screeningVM.Screening.StartTime.AddMinutes(movie.Duration) >= screening.StartTime
+							&& screeningVM.Screening.StartTime.AddMinutes(movie.Duration) <= screening.StartTime.AddMinutes(screening.Movie.Duration))
+						{
+							conflict = true;
+						}
+						if (screening.StartTime >= screeningVM.Screening.StartTime
+							&& screening.StartTime.AddMinutes(screening.Movie.Duration) <= screeningVM.Screening.StartTime.AddMinutes(movie.Duration))
+						{
+							conflict = true;
+						}
 					}
 				}
 
 				if (conflict)
 				{
 					ModelState.AddModelError("Screening.StartTime", "Another movie is shown at that time.");
-					screeningVM.MovieSelectList = _selectedMovieList;
 					return View(screeningVM);
 				}
 
@@ -103,7 +117,6 @@ namespace CinemaApp.Web.Controllers
 				if (screeningVM.Screening.StartTime.Date <= DateTime.Today)
 				{
 					ModelState.AddModelError("Screening.StartTime", "Screening date must be at least tomorrow.");
-					screeningVM.MovieSelectList = _selectedMovieList;
 					return View(screeningVM);
 				}
 
@@ -119,7 +132,12 @@ namespace CinemaApp.Web.Controllers
 				await _unitOfWork.SaveAsync();
 				return RedirectToAction("Details", "Room", new { id = screeningVM.Screening.RoomId });
 			}
-			return View();
+			screeningVM.MovieSelectList = _unitOfWork.Movie.GetAllAsync().Result.Select(x => new SelectListItem
+			{
+				Text = x.Title,
+				Value = x.Id.ToString()
+			});
+			return View(screeningVM);
 		}
 
 		public async Task<IActionResult> Details(int? id)
