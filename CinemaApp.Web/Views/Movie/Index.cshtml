@@ -32,7 +32,9 @@
 						@foreach (var movie in Model)
 						{
 							<tr class="align-middle">
-								<td>@movie.Title</td>
+								<td class="align-middle py-1">
+									<a asp-controller="Movie" asp-action="Details" asp-route-id="@movie.Id" class="text-white-50 text-decoration-none">@movie.Title</a>
+								</td>
 								<td class="d-none d-md-table-cell">@movie.Director</td>
 								<td class="d-none d-md-table-cell">@movie.ReleaseDate.Year</td>
 								<td class="d-none d-lg-table-cell">
