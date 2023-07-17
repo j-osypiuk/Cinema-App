@@ -122,6 +122,13 @@
 
             $('#row-select option:eq(' + rowNumber + ')').prop('selected', true)
             $('#seat-select option:eq(' + seatNumber + ')').prop('selected', true)
+
+            var selectedSeatsNumbers = []
+            $('.btn-check:disabled').each(function () {
+                selectedSeatsNumbers.push(Number($(this).attr('id').split('-')[1]))
+            })
+
+            checkIfReserved(selectedSeatsNumbers)
         })
 
         function checkIfReserved(selectedSeatsNumbers) {
@@ -156,7 +163,7 @@
             checkIfReserved(selectedSeatsNumbers)
         })
 
-        $('#open-modal-btn').click(function() {
+        $('#open-modal-btn').click(function(){
             if (rowNumber !== 0 && seatNumber !== 0) {
                 userSelectedSeatNumber = (rowNumber - 1) * 16 + Number(seatNumber)
                 $('#btnradio-' + userSelectedSeatNumber).prop('checked', true)
