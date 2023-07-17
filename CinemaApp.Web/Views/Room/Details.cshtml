@@ -1,7 +1,7 @@
 ﻿@model Room
 
 <div class="row justify-content-center">
-	<div class="card col-lg-6 shadow bg-primary bg-opacity-50 mt-4 px-0 w-100">
+	<div class="card col-lg-6 shadow bg-dark mt-4 px-0 w-100">
 		<div class="card-header border-0 bg-primary">
 			<div class="row">
 				<div class="col-12 text-center">
@@ -9,7 +9,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="card-body bg-dark p-4">
+		<div class="card-body p-4">
 			<div class="row pb-3">
 				<div class="col-12 text-end">
 					<a asp-controller="Screening" asp-action="Create" asp-route-roomId="@Model.Id" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add New Screening</a>
@@ -24,7 +24,7 @@
 						<thead>
 							<tr>
 								<th class="bg-primary">Title</th>
-								<th class="bg-primary">Director</th>
+								<th class="bg-primary d-none d-md-table-cell">Director</th>
 								<th class="bg-primary">Time</th>
 								<th class="bg-primary">Type</th>
 								<th class="bg-primary"></th>
@@ -39,7 +39,7 @@
 										<td class="align-middle py-1">
 											<a asp-controller="Movie" asp-action="Details" asp-route-id="@screening.MovieId" class="text-white-50 text-decoration-none">@screening.Movie.Title</a>
 										</td>
-										<td class="align-middle py-1">@screening.Movie.Director</td>
+										<td class="align-middle py-1 d-none d-md-table-cell">@screening.Movie.Director</td>
 										<td class="align-middle py-1">@screening.StartTime.ToShortTimeString() - @screening.StartTime.AddMinutes(screening.Movie.Duration).ToShortTimeString()</td>
 										<td class="align-middle py-1">
 											@if (screening.Is3D)
