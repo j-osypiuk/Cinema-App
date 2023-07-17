@@ -1,11 +1,11 @@
 ﻿@model Screening
 
-<div class="d-flex justify-content-center">
-	<div class="card shadow border-0 mt-4 w-100">
-		<div class="card-header bg-black bg-gradient mt-0 py-1">
+<div class="row justify-content-center">
+	<div class="card col-lg-6 shadow bg-primary bg-opacity-50 mt-4 px-0">
+		<div class="card-header border-0 bg-primary">
 			<div class="row">
 				<div class="col-12 text-center">
-					<h2 class="text-white py-2">Screening</h2>
+					<h2 class="text-white my-0 py-2">Screening</h2>
 				</div>
 			</div>
 		</div>
@@ -18,19 +18,19 @@
 							<td>Title</td>
 							<td>@Model.Movie.Title</td>
 						</tr>
-						<tr>
+						<tr class="align-middle">
 							<td>Director</td>
 							<td>@Model.Movie.Director</td>
 						</tr>
-						<tr>
+						<tr class="align-middle">
 							<td>Time</td>
 							<td>@Model.StartTime.ToShortDateString() - @Model.StartTime.ToShortTimeString() : @Model.StartTime.AddMinutes(Model.Movie.Duration).ToShortTimeString()</td>
 						</tr>
-						<tr>
+						<tr class="align-middle">
 							<td>Tickets Sold</td>
 							<td>@Model.Tickets.Count</td>
 						</tr>
-						<tr>
+						<tr class="align-middle">
 							<td>Seat Reservations</td>
 							<td>
 								@foreach (var seatReservation in Model.Tickets)
