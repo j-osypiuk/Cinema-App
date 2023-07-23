@@ -205,7 +205,7 @@ namespace CinemaApp.Web.Controllers
 			_unitOfWork.Movie.Remove(movie);
 			await _unitOfWork.SaveAsync();
 
-			return View();
+			return RedirectToAction("Index");
 		}
 	}
 }

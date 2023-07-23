@@ -1,11 +1,11 @@
 ﻿@model Genre
 
-<div class="d-flex row justify-content-center">
-	<div class="card col-md-6 shadow bg-dark mt-4">
-		<div class="card-header bg-black bg-gradient mt-0 py-1">
+<div class="row justify-content-center">
+	<div class="card col-lg-6 shadow bg-primary bg-opacity-50 mt-4 px-0">
+		<div class="card-header border-0 bg-primary">
 			<div class="row">
 				<div class="col-12 text-center">
-					<h2 class="text-white py-2">Create Category</h2>
+					<h2 class="text-white my-0 py-2">Create Genre</h2>
 				</div>
 			</div>
 		</div>
@@ -16,8 +16,8 @@
 					<input asp-for="Name" class="form-control" placeholder="Genre Name">
 					<span asp-validation-for="Name" class="text-danger"></span>
 				</div>
-				<div class="row pt-2">
-					<div class="col-6 col-md-3">
+				<div class="row pt-2 justify-content-center justify-content-sm-start">
+					<div class="col-6 col-sm-4">
 						<button type="submit" class="btn btn-primary form-control">Create</button>
 					</div>
 				</div>

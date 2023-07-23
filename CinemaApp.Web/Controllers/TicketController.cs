@@ -28,7 +28,7 @@ namespace CinemaApp.Web.Controllers
 				return NotFound();
 			}
 
-			movieScreenings.OrderBy(x => x.StartTime).ToList();
+			movieScreenings = movieScreenings.OrderBy(x => x.StartTime.TimeOfDay).ToList();
 			return View(movieScreenings);
 		}
 

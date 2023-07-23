@@ -108,7 +108,7 @@ namespace CinemaApp.Web.Controllers
 			_unitOfWork.Genre.Remove(genre);
 			await _unitOfWork.SaveAsync();
 
-			return View();
+			return RedirectToAction("Index");
 		}
 	}
 }

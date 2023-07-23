@@ -1,11 +1,11 @@
 ﻿@model HomeContent
 
-<div class="d-flex row justify-content-center">
-	<div class="card col-lg-6 shadow bg-dark mt-4">
-		<div class="card-header bg-black bg-gradient mt-0 py-1">
+<div class="row justify-content-center">
+	<div class="card col-lg-6 shadow bg-primary bg-opacity-50 mt-4 px-0">
+		<div class="card-header border-0 bg-primary">
 			<div class="row">
 				<div class="col-12 text-center">
-					<h2 class="text-white py-2">Edit Home Content</h2>
+					<h2 class="text-white my-0 py-2">Edit Home Content</h2>
 				</div>
 			</div>
 		</div>
@@ -60,8 +60,8 @@
 					<textarea asp-for="BlogContent_3" class="form-control" style="height:450px;"></textarea>
 					<span asp-validation-for="BlogContent_3" class="text-danger"></span>
 				</div>
-				<div class="row pt-2">
-					<div class="col-4 col-xl-3">
+				<div class="row pt-2 justify-content-center justify-content-sm-start">
+					<div class="col-6 col-sm-4 col-xl-3">
 						<button type="submit" class="btn btn-primary form-control">Save</button>
 					</div>
 				</div>

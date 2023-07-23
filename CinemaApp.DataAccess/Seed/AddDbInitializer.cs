@@ -69,7 +69,7 @@ namespace CinemaApp.DataAccess.Seed
 						{
 							CarouselImgUrl_1 = @"\images\carousel\7f2ee018-c1ef-4249-925a-cc6ba3b982e0.jpg",
 							CarouselImgUrl_2 = @"\images\carousel\6ccd8c10-9a18-479f-b933-71737d268418.jpg",
-							CarouselImgUrl_3 = @"\images\carousel\96ebbedc-40da-46dd-b705-705ee8e732de.jpg",
+							CarouselImgUrl_3 = @"\images\carousel\26829825-35b9-433a-8b97-bdbd2e616683.jpg",
 							BlogTitle_1 = "We believe that",
 							BlogTitle_2 = "What's new?",
 							BlogTitle_3 = "See unseen",

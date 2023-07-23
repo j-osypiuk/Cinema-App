@@ -1,15 +1,15 @@
 ﻿@model List<Screening>
 
-<div class="d-flex justify-content-center row">
-	<div class="card shadow border-0 mt-4 px-0 col-8">
-		<div class="card-header bg-black bg-gradient mt-0 py-1">
+<div class="row justify-content-center">
+	<div class="card col-lg-6 shadow bg-dark mt-4 w-100 px-0">
+		<div class="card-header border-0 bg-primary">
 			<div class="row">
 				<div class="col-12 text-center">
-					<h2 class="text-white py-2">@(Model.Count != 0 ? Model[0].Movie.Title : "No screenings of that movie")</h2>
+					<h2 class="text-white my-0 py-2">@(Model.Count != 0 ? Model[0].Movie.Title : "No screenings of that movie")</h2>
 				</div>
 			</div>
 		</div>
-		<div class="card-body bg-dark p-4">
+		<div class="card-body p-4">
 			@foreach (var date in Model.Select(x => x.StartTime.Date).Distinct().ToList())
 			{
 				<span class="d-inline-block p-3 bg-primary text-white rounded rounded-1 mb-2">@date.ToShortDateString()</span>
@@ -17,12 +17,12 @@
 				<div class="table-responsive">
 					<table class="table table-dark table-striped">
 						<thead>
-							<tr>
-								<th class="bg-black bg-gradient">Title</th>
-								<th class="bg-black bg-gradient">Time</th>
-								<th class="bg-black bg-gradient">Room</th>
-								<th class="bg-black bg-gradient">Type</th>
-								<th class="bg-black bg-gradient"></th>
+							<tr class="d-none d-sm-table-row">
+								<th class="bg-primary">Title</th>
+								<th class="bg-primary">Time</th>
+								<th class="bg-primary">Room</th>
+								<th class="bg-primary">Type</th>
+								<th class="bg-primary"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -30,7 +30,7 @@
 							{
 								if (screening.StartTime.Date == date.Date)
 								{
-									<tr>
+									<tr class="d-none d-sm-table-row">
 										<td class="align-middle py-1">@screening.Movie.Title</td>
 										<td class="align-middle py-1">@screening.StartTime.ToShortTimeString() - @screening.StartTime.AddMinutes(screening.Movie.Duration).ToShortTimeString()</td>
 										<td class="align-middle py-1">@screening.Room.Number</td>
@@ -45,6 +45,39 @@
 											}
 										</td>
 										<td class="text-end">
+											<a role="button" asp-controller="Ticket" asp-action="Create" asp-route-screeningId="@screening.Id" class="btn fw-bold fs-4 p-2 me-3 btn-warning text-black rounded rounded-2">
+												<i class="bi bi-basket2-fill fs-4"></i> Buy Ticket
+											</a>
+										</td>
+									</tr>
+
+									<tr class="align-middle d-sm-none">
+										<td class="bg-primary">Title</td>
+										<td class="bg-primary">@screening.Movie.Title</td>
+									</tr>
+									<tr class="align-middle d-sm-none">
+										<td>Time</td>
+										<td>@screening.StartTime.ToShortTimeString() - @screening.StartTime.AddMinutes(screening.Movie.Duration).ToShortTimeString()</td>
+									</tr>
+									<tr class="align-middle d-sm-none">
+										<td>Room</td>
+										<td>@screening.Room.Number</td>
+									</tr>
+									<tr class="align-middle d-sm-none">
+										<td>Type</td>
+										<td>
+											@if (screening.Is3D)
+											{
+												<i class="bi bi-badge-3d-fill fs-1"></i>
+											}
+											else
+											{
+												<i class="bi bi-badge-8k-fill fs-1"></i>
+											}
+										</td>
+									</tr>
+									<tr class="align-middle d-sm-none text-center">
+										<td colspan="2" class="border border-0">
 											<a role="button" asp-controller="Ticket" asp-action="Create" asp-route-screeningId="@screening.Id" class="btn fw-bold fs-4 p-2 me-3 btn-warning text-black rounded rounded-2">
 												<i class="bi bi-basket2-fill fs-4"></i> Buy Ticket
 											</a>

@@ -265,7 +265,7 @@ namespace CinemaApp.Tests.ControllersTests
 		}
 
 		[Fact]
-		public async Task GenreController_Delete_ReturnsAViewIfGivenGenreIsDeleted()
+		public async Task GenreController_Delete_RedirectsToIndexActionIfGivenGenreIsDeleted()
 		{
 			// Arrange
 			int? id = 1;
@@ -278,7 +278,9 @@ namespace CinemaApp.Tests.ControllersTests
 			var result = await _sut.Delete(id);
 
 			// Assert
-			var viewResult = Assert.IsType<ViewResult>(result);
+			var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+			Assert.Null(redirectToActionResult.ControllerName);
+			Assert.Equal("Index", redirectToActionResult.ActionName);
 			_unitOfWorkMock.Verify();
 		}
 	}
